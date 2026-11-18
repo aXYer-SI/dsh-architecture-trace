@@ -25,7 +25,9 @@ The plugin **starts disabled**; nothing is recorded until you enable it in Setti
 
 Prompts grow with the task, so `turn-NN.md` and `prompts.md` grow too: a long turn can write hundreds of KB or several MB, and a few sessions can fill a disk or stall a Markdown preview.
 
-**Use it for small, short tasks**, then turn it off. The plugin also **disables its own row when the session ends**, so it never keeps recording because you forgot about it.
+**Use it for small, short tasks**, then turn it off. The plugin also **disables its own row five minutes after a turn ends while idle**, and when the session is actually torn down — so it never keeps recording because you forgot about it.
+
+> Why not "window closed"? DSH emits `session/disposed` only when a session is destroyed (deleted, or the app quits); a chat window that merely stays open never fires it. The only reliable "this task is finished" signal is the end of a turn, so idle time is the fallback.
 
 ## You want this if —
 
@@ -202,7 +204,8 @@ On the plugin row, or in the profile's patch layer:
     captureRealtime: true                  # ⚡ master switch for the in-memory layer
     captureLlmCalls: true                  # ⚡ record every model call and stream
     capturePrompts: true                   # also write prompts.md
-    autoDisable: true                      # switch this plugin off when the session ends
+    autoDisable: 'idle'                    # idle | turn | session | false
+    idleMinutes: 5                         # idle-mode wait
     summaryMaxChars: 0                     # summary budget; 0 keeps the whole text
     includeStream: false                   # include the per-chunk record
     includeRaw: false                      # include raw event JSON

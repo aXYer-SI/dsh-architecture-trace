@@ -4,6 +4,19 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2026-11-18
+
+### Fixed
+
+- **Auto-disable never ran.** It hung off `session/disposed`, which DSH emits only when a session is
+  torn down (deleted, or the app quits) — not when a task finishes in a chat window that stays open.
+- It now keys off the end of a turn: `autoDisable: 'idle'` (default) waits `idleMinutes` (5) with no
+  new turn and then disables the row; `'turn'` fires right after every turn; `'session'` keeps the
+  old behaviour; `false` never disables.
+- The row id is resolved from the plugin list with fallbacks (`include:<id>`, `<id>`), and every
+  attempt appends one line to `auto-disable.log` in the session directory, so a silent no-op is
+  visible instead of invisible.
+
 ## [0.6.0] - 2026-11-18
 
 ### Changed
@@ -111,6 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reading guide (`00-格式说明.md`) written once per output directory.
 - Test suite with synthetic events and a simulated stream.
 
+[0.6.1]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.6.1
 [0.6.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.6.0
 [0.5.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.5.0
 [0.4.1]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.4.1

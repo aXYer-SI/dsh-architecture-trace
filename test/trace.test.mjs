@@ -26,7 +26,7 @@ const ctx = {
 }
 const session = { id: 'session-demo', header: { createdAt: Date.now(), cwd: OUTPUT } }
 
-apply(ctx, { outputDir: OUTPUT })
+apply(ctx, { outputDir: OUTPUT, autoDisable: 'turn' })
 const now = () => Date.now()
 const emit = (type, data, seq = 0, time = now()) => listeners.get('session/event')?.(session, { type, seq, time, data })
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -224,12 +224,38 @@ assert.match(prompts, /#### 模型回答/)
 assert.match(prompts, /示例输出/, 'the streamed answer is recorded')
 assert.match(prompts, /🔧 请求工具/, 'tool-call deltas are reconstructed')
 
-// ---- auto-disable: the row is turned off once the session is disposed -----
-listeners.get('session/disposed')?.(session)
-await sleep(400)
-assert.equal(disableCalls.length, 1, 'auto-disable runs once per disposed session')
-assert.equal(disableCalls[0].enabled, false, 'it disables rather than enables')
-assert.ok(String(disableCalls[0].id).endsWith('architecture-trace'), 'it targets this plugin row')
+// ---- auto-disable: a finished turn switches the plugin off ----------------
+assert.ok(disableCalls.length >= 1, 'turn/end disables the plugin')
+assert.equal(disableCalls.at(-1).enabled, false, 'it disables rather than enables')
+assert.ok(String(disableCalls.at(-1).id).endsWith('architecture-trace'), 'it targets this plugin row')
+
+// ---- idle mode waits, and a new turn cancels the countdown ----------------
+const idleCalls = []
+const listeners3 = new Map()
+const ctx3 = {
+  on: (event, listener) => { listeners3.set(event, listener); return () => listeners3.delete(event) },
+  effect: (factory) => factory(),
+  get: (name) => (name === 'pluginManager'
+    ? {
+      async listPlugins() { return [{ entryId: 'include:architecture-trace' }] },
+      async setPluginEnabled(id, enabled) { idleCalls.push({ id, enabled }); return { application: 'applied' } },
+    }
+    : undefined),
+}
+apply(ctx3, { outputDir: join(import.meta.dirname, 'out-idle'), autoDisable: 'idle', idleMinutes: 0.002 })
+const session3 = { id: 'session-idle', header: { createdAt: Date.now(), cwd: OUTPUT } }
+let seq3 = 0
+const emit3 = (type, data) => listeners3.get('session/event')(session3, { type, seq: ++seq3, time: Date.now(), data })
+emit3('turn/start', { turn: 1 })
+emit3('turn/end', { turn: 1, reason: { kind: 'completed' } })
+await sleep(40)
+emit3('turn/start', { turn: 2 })
+await sleep(320)
+assert.equal(idleCalls.length, 0, 'a new turn cancels the idle countdown')
+emit3('turn/end', { turn: 2, reason: { kind: 'completed' } })
+await sleep(320)
+assert.equal(idleCalls.length, 1, 'an idle turn countdown fires')
+assert.equal(idleCalls[0].enabled, false)
 
 console.log('trace.test: sections, layers, model switch, full summaries and durable-only mode verified')
 

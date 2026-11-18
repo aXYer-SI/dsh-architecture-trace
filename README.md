@@ -25,7 +25,9 @@
 
 为什么：提示词会随着任务变长不断变长，`turn-NN.md` 和 `prompts.md` 会跟着膨胀。长任务里一轮就可能写出几百 KB 到几 MB，多个会话累积起来很容易把磁盘写满，也可能让 Markdown 预览卡住。
 
-**建议只在小型、短时的任务上开启**，用完就关。插件也会在**会话结束时自动把自己的开关关掉**，下次要用再手动打开——这样它不会在你忘记的时候一直记录。
+**建议只在小型、短时的任务上开启**，用完就关。插件会在**一轮结束、空闲 5 分钟后**自动把自己的开关关掉，会话被真正销毁时也会关——这样它不会在你忘记的时候一直记录。
+
+> 为什么不用「关闭窗口」判断：DSH 的 `session/disposed` 只在会话销毁（删除会话、退出应用）时触发，聊天窗口一直开着时不会触发。可靠的「这件事做完了」信号只有**一轮结束**，所以用空闲时间兜底。
 
 ## 你会需要它，如果你——
 
@@ -202,7 +204,8 @@ dsh-traces/
     captureRealtime: true                  # ⚡ 总开关：记录 / 不记录非落盘事件
     captureLlmCalls: true                  # ⚡ 开启时，记录每次模型调用与流式响应
     capturePrompts: true                   # 另存 prompts.md：提示词与模型回答
-    autoDisable: true                      # 会话结束后自动关闭本插件
+    autoDisable: 'idle'                    # idle | turn | session | false
+    idleMinutes: 5                         # idle 模式的等待分钟数
     summaryMaxChars: 0                     # 摘要字数上限；0 = 完整不截断
     includeStream: false                   # 🗄 附带落盘的逐片段记录
     includeRaw: false                      # 附带原始事件 JSON
@@ -214,8 +217,11 @@ dsh-traces/
 | `captureRealtime` | `true` | **总开关**。关掉后完全不记录 ⚡ 层，只剩可回放的 🗄 事件 |
 | `captureLlmCalls` | `true` | 在 ⚡ 层开启的前提下，单独关闭模型调用与流式响应 |
 | `capturePrompts` | `true` | 另存 `prompts.md`；关掉可省下按调用重复保存的提示词 |
-| `autoDisable` | `true` | 会话结束后自动把本插件行设为关闭，避免下次静默记录 |
+| `autoDisable` | `'idle'` | `idle`：一轮结束、空闲 `idleMinutes` 分钟后自动关闭；`turn`：每轮结束立刻关；`session`：仅会话销毁时关；`false`：从不 |
+| `idleMinutes` | `5` | `autoDisable: 'idle'` 的空闲分钟数 |
 | `entryId` | `architecture-trace` | 自动关闭时操作的行 id |
+
+自动关闭会在会话目录里留下 `auto-disable.log`（一行：什么时候、用哪个行 id、成功还是失败），排查「它到底关没关」时先看这个文件。
 | `summaryMaxChars` | `0` | §2 时间线摘要的字数上限；`0` = 保留完整文本 |
 | `includeStream` | `false` | 打开后体积会明显变大 |
 | `includeRaw` | `false` | 排查插件自身问题时用 |
