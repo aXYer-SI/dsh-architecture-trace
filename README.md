@@ -142,6 +142,7 @@ dsh-traces/
 ├── 00-格式说明.md              ← 阅读指南（首次写入时生成）
 └── session-xxxx/
     ├── index.md                ← 轮次索引
+    ├── prompts.md              ← 提示词记录：发给模型的原话 + 模型回答
     ├── turn-00.md              ← 轮次外的辅助调用（标题生成等）
     └── turn-01.md              ← 第 1 轮全过程
 ```
@@ -171,6 +172,17 @@ dsh-traces/
 
 权威依据是落盘的 `request/header`（原因 `change`）；⚡ 的每次调用用于核对实际使用的模型。
 
+## 提示词记录 prompts.md
+
+每个会话额外生成一份 `prompts.md`：**harness 实际发给模型的原话** + **模型的原样回答**，专门用来学提示词。
+
+- 第一次调用给出完整提示词（系统提示 + 用户输入）；
+- 之后每次只列**新增**的消息（工具结果、新的助手消息），并注明「前 N 条与上一次相同」；
+- 上下文被压缩或重排时，回落为完整提示词并标注；
+- 每次调用后紧跟模型回答：推理、正文、工具调用（由流式片段重建）。
+
+和 `turn-NN.md` 互补：那边是落盘事实（§3 系统提示、§7 每次请求），这边是对话原貌。不想生成时设 `capturePrompts: false`。
+
 ## 配置
 
 在插件行配置里填写，或写进 profile 的 patch 层：
@@ -181,6 +193,7 @@ dsh-traces/
     outputDir: "C:/Users/you/dsh-traces"  # 留空 = 会话工作目录/dsh-traces
     captureRealtime: true                  # ⚡ 总开关：记录 / 不记录非落盘事件
     captureLlmCalls: true                  # ⚡ 开启时，记录每次模型调用与流式响应
+    capturePrompts: true                   # 另存 prompts.md：提示词与模型回答
     summaryMaxChars: 0                     # 摘要字数上限；0 = 完整不截断
     includeStream: false                   # 🗄 附带落盘的逐片段记录
     includeRaw: false                      # 附带原始事件 JSON
@@ -191,6 +204,7 @@ dsh-traces/
 | `outputDir` | 空 | 绝对路径；空表示写到各会话自己的工作目录 |
 | `captureRealtime` | `true` | **总开关**。关掉后完全不记录 ⚡ 层，只剩可回放的 🗄 事件 |
 | `captureLlmCalls` | `true` | 在 ⚡ 层开启的前提下，单独关闭模型调用与流式响应 |
+| `capturePrompts` | `true` | 另存 `prompts.md`；关掉可省下按调用重复保存的提示词 |
 | `summaryMaxChars` | `0` | §2 时间线摘要的字数上限；`0` = 保留完整文本 |
 | `includeStream` | `false` | 打开后体积会明显变大 |
 | `includeRaw` | `false` | 排查插件自身问题时用 |

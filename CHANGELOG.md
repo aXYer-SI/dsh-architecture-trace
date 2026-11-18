@@ -4,6 +4,20 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-11-18
+
+### Added
+
+- **`prompts.md` per session**: a prompt journal holding the messages the harness actually sent
+  and the model's raw answer, so the harness's prompt construction can be studied directly.
+  - the first call shows the complete prompt (system prompt included, merged from the
+    `system/message` event when the request does not carry it);
+  - later calls show only the messages added since the previous call, with a note of how many
+    earlier ones were unchanged;
+  - a compacted or reordered context falls back to the full prompt and says so;
+  - each call is followed by the answer: reasoning, text and reconstructed tool calls.
+- `capturePrompts` option (default `true`) to skip the journal; the session index links to it.
+
 ## [0.4.1] - 2026-11-18
 
 ### Changed
@@ -84,6 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reading guide (`00-格式说明.md`) written once per output directory.
 - Test suite with synthetic events and a simulated stream.
 
+[0.5.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.5.0
 [0.4.1]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.4.1
 [0.4.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.4.0
 [0.3.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.3.0

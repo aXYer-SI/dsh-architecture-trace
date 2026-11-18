@@ -142,6 +142,7 @@ dsh-traces/
 ├── 00-格式说明.md              ← reading guide (written on first use)
 └── session-xxxx/
     ├── index.md                ← turn index
+    ├── prompts.md              ← prompt journal: what was sent, what came back
     ├── turn-00.md              ← auxiliary calls outside a turn
     └── turn-01.md              ← the full first turn
 ```
@@ -171,6 +172,17 @@ dsh-traces/
 
 The authority is the durable `request/header` event (reason `change`); the ⚡ calls confirm which model was actually used.
 
+## Prompt journal (prompts.md)
+
+Each session also writes `prompts.md`: **the messages the harness actually sent** plus **the model's raw answer**, made for studying prompts.
+
+- the first call shows the complete prompt (system prompt + user input);
+- every later call lists only the **new** messages (tool results, new assistant turns) and says how many earlier ones were unchanged;
+- when the context is compacted or reordered it falls back to the full prompt and says so;
+- each call is followed by the answer: reasoning, text and tool calls, rebuilt from the stream.
+
+It complements `turn-NN.md`: that file is the durable record (§3 system prompt, §7 every request), this one is the conversation as it happened. Set `capturePrompts: false` to skip it.
+
 ## Configuration
 
 On the plugin row, or in the profile's patch layer:
@@ -181,6 +193,7 @@ On the plugin row, or in the profile's patch layer:
     outputDir: "C:/Users/you/dsh-traces"  # empty = <session cwd>/dsh-traces
     captureRealtime: true                  # ⚡ master switch for the in-memory layer
     captureLlmCalls: true                  # ⚡ record every model call and stream
+    capturePrompts: true                   # also write prompts.md
     summaryMaxChars: 0                     # summary budget; 0 keeps the whole text
     includeStream: false                   # include the per-chunk record
     includeRaw: false                      # include raw event JSON

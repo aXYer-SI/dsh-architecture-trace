@@ -91,7 +91,17 @@ await runStream({
   provider: 'workbuddy',
   model: 'glm-5.3',
   sessionId: 'session-demo',
-  messages: [{ role: 'user', content: [{ type: 'text', text: '继续' }] }],
+  messages: [
+    { role: 'user', content: [{ type: 'text', text: '帮我看一下 README' }] },
+    {
+      role: 'assistant',
+      content: [
+        { type: 'text', text: '我先读取 README。' },
+        { type: 'tool-call', id: 'call-1', name: 'read', arguments: '{"file_path":"README.md"}' },
+      ],
+    },
+    { role: 'tool', toolCallId: 'call-1', content: [{ type: 'text', text: '# README\n\n这是一个测试文件。' }] },
+  ],
   tools: [{ name: 'read', description: '读取工作区文件', parameters: {} }],
 }, { kind: 'tool-calls' })
 
@@ -189,6 +199,18 @@ await sleep(900)
 const durableTurn = await readFile(join(OUTPUT2, 'session-durable', 'turn-01.md'), 'utf8')
 assert.doesNotMatch(durableTurn, /⚡ 内存 \|/, 'no in-memory rows in the timeline')
 assert.ok(durableTurn.includes(longUserText), 'the full summary is written')
+
+// ---- prompt journal: harness prompts + model answers in one file ----------
+const prompts = await readFile(join(dir, 'prompts.md'), 'utf8')
+assert.match(prompts, /# 提示词记录 \/ Prompt journal/)
+assert.match(prompts, /\*\*完整提示词\*\*（首次调用，共 2 条）/, 'first call shows the whole prompt')
+assert.match(prompts, /## 第 1 轮 · `deepseek\/deepseek-v4\.1-flash`/)
+assert.match(prompts, /\*\*本次新增 2 条\*\*（前 2 条与上一次调用相同，省略）/, 'second call shows only the delta')
+assert.match(prompts, /你是 DeepSeek Harness 的助手/)
+assert.match(prompts, /这是一个测试文件/, 'the tool result is part of the next prompt')
+assert.match(prompts, /#### 模型回答/)
+assert.match(prompts, /示例输出/, 'the streamed answer is recorded')
+assert.match(prompts, /🔧 请求工具/, 'tool-call deltas are reconstructed')
 
 console.log('trace.test: sections, layers, model switch, full summaries and durable-only mode verified')
 
