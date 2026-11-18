@@ -1,0 +1,96 @@
+{
+  "format": 1,
+  "title": {
+    "en": "aXyer DSH plugins",
+    "zh": "aXyer 的 DSH 插件"
+  },
+  "description": {
+    "en": "Small, focused plugins for DeepSeek Harness. Everything here comes from learning DSH internals: readable output, no network calls, no prompt changes.",
+    "zh": "小而专注的 DeepSeek Harness 插件。都是作者读 DSH 内部机制时的产物：输出可读、不联网、不改提示词。"
+  },
+  "metadata": {
+    "categories": {
+      "observability": {
+        "title": {
+          "en": "Observability",
+          "zh": "可观测性"
+        }
+      },
+      "learning": {
+        "title": {
+          "en": "Learning",
+          "zh": "学习"
+        }
+      }
+    },
+    "labels": {
+      "markdown": {
+        "title": {
+          "en": "Markdown output",
+          "zh": "Markdown 输出"
+        }
+      },
+      "offline": {
+        "title": {
+          "en": "Offline",
+          "zh": "离线、不联网"
+        }
+      },
+      "chinese": {
+        "title": {
+          "en": "Chinese UI",
+          "zh": "中文界面"
+        }
+      }
+    }
+  },
+  "plugins": [
+    {
+      "name": "dsh-learning-trace",
+      "title": {
+        "en": "Learning trace",
+        "zh": "学习追踪"
+      },
+      "description": {
+        "en": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token.",
+        "zh": "把每次 DSH 任务的完整运作过程记录成 Markdown：系统提示、请求头、每次模型调用与流式响应、工具调用与结果、耗时与首字时间。"
+      },
+      "icon": "icon.svg",
+      "author": "aXyer",
+      "homepage": "https://github.com/aXYer-SI/dsh-learning-trace#readme",
+      "repository": {
+        "url": "https://github.com/aXYer-SI/dsh-learning-trace"
+      },
+      "metadata": {
+        "category": "observability",
+        "keywords": [
+          "dsh",
+          "trace",
+          "learning",
+          "markdown",
+          "observability",
+          "ttft"
+        ],
+        "labels": [
+          "markdown",
+          "offline",
+          "chinese"
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishTimestamp": 1795003586,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/aXYer-SI/dsh-learning-trace",
+            "commit": "8edf9e209c9d98bfb44794971a7a8f58b305ad23"
+          },
+          "engines": {
+            "dsh": ">=0.2.2-rc.3"
+          }
+        }
+      ]
+    }
+  ]
+}
