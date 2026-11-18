@@ -52,7 +52,7 @@
   },
   "plugins": [
     {
-      "name": "dsh-learning-trace",
+      "name": "dsh-architecture-trace",
       "title": {
         "en": "DSH architecture trace",
         "zh": "DSH 架构追踪"
@@ -63,9 +63,9 @@
       },
       "icon": "icon.svg",
       "author": "aXyer",
-      "homepage": "https://github.com/aXYer-SI/dsh-learning-trace#readme",
+      "homepage": "https://github.com/aXYer-SI/dsh-architecture-trace#readme",
       "repository": {
-        "url": "https://github.com/aXYer-SI/dsh-learning-trace"
+        "url": "https://github.com/aXYer-SI/dsh-architecture-trace"
       },
       "metadata": {
         "category": "developer-tools",
@@ -90,12 +90,12 @@
       },
       "versions": [
         {
-          "version": "0.1.2",
-          "publishTimestamp": 1795008598,
+          "version": "0.2.0",
+          "publishTimestamp": 1795008751,
           "source": {
             "type": "git",
-            "url": "https://github.com/aXYer-SI/dsh-learning-trace",
-            "commit": "a7b1edea2b6a737a03c29a5153b8c893ede7dcff"
+            "url": "https://github.com/aXYer-SI/dsh-architecture-trace",
+            "commit": "4184520f0c677fb48e043a6bd0a512de31344772"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
