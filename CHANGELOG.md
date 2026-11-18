@@ -4,6 +4,15 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-11-18
+
+### Changed
+
+- Display title is now 「DSH 架构追踪」/ "DSH architecture trace" instead of 「学习追踪」/
+  "Learning trace". The old name read like an education product; the plugin is about seeing how
+  DSH wires a prompt, a model call and a tool round-trip into one turn.
+- Package description states that architecture angle.
+
 ## [0.1.1] - 2026-11-18
 
 ### Fixed
@@ -33,5 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reading guide (`00-格式说明.md`) written once per output directory.
 - Test suite with synthetic events and a simulated stream.
 
+[0.1.2]: https://github.com/aXYer-SI/dsh-learning-trace/releases/tag/v0.1.2
 [0.1.1]: https://github.com/aXYer-SI/dsh-learning-trace/releases/tag/v0.1.1
 [0.1.0]: https://github.com/aXYer-SI/dsh-learning-trace/releases/tag/v0.1.0

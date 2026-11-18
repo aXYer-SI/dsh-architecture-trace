@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "学习追踪",
+    "title": "DSH 架构追踪",
     "description": "把每次 DSH 任务的完整运作过程记录成 Markdown：系统提示、请求头、每一次模型调用与流式响应、工具调用与结果、耗时与 TTFT。装好后在「设置 → 插件」里开关本行；输出默认写到会话工作目录下的 dsh-traces/，可用 outputDir 改到别处。记录含系统提示、工具参数与模型输出，分享前请先清理敏感信息。",
     "detail": "docs/DETAIL.zh.md"
   }
