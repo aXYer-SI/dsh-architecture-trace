@@ -8,7 +8,7 @@ Flattens a whole turn — system prompt, request headers, every model call and s
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.4.0-blue)
+![version](https://img.shields.io/badge/version-0.4.1-blue)
 [![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-architecture-trace?style=social)](https://github.com/aXYer-SI/dsh-architecture-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [Live example](examples/session-demo/turn-01.md) · [Install](#install)
@@ -33,7 +33,7 @@ Flattens a whole turn — system prompt, request headers, every model call and s
 
 This turn has 2 model segments and **1 switch**.
 
-| Segment | Model | Start | Duration | Calls | Cause |
+| 段<br>Segment | 模型<br>Model | 起始<br>Start | 持续<br>Duration | 该段调用<br>Calls | 触发<br>Cause |
 |--:|---|---|--:|--:|---|
 | 1 | `deepseek/deepseek-v4.1-flash` | +0.006s | 268ms | 1 | `initial` |
 | 2 | 🔀 `workbuddy/glm-5.3` | +0.274s | 0ms | 1 | `change` |
@@ -42,7 +42,7 @@ This turn has 2 model segments and **1 switch**.
 
 ## 2 · Full timeline
 
-| # | Offset | Source | Event | Model | Summary |
+| # | 偏移<br>Offset | 来源<br>Source | 事件<br>Event | 模型<br>Model | 摘要<br>Abstract |
 |--:|--:|---|---|---|---|
 | 3 | +0.006s | 🗄 durable | `request/header` | deepseek/deepseek-v4.1-flash | reason initial |
 | 4 | +0.006s | 🗄 durable | `system/message` | · | system prompt 24,706 chars |
@@ -76,7 +76,7 @@ This is the part the plugin is pedantic about: every line is labelled with its l
 - **A performance ledger.** Message counts, characters, tool counts, TTFT, total duration, tokens, tok/s per request.
 - **Failures leave a trace.** Retries, request errors and cancelled attempts appear in §5.x and §8 instead of vanishing.
 - **Complete summaries.** Timeline summaries keep the whole text by default; `summaryMaxChars` narrows them when you want that.
-- **Bilingual table headers.** Every generated table carries both labels, e.g. `摘要 Abstract`, `偏移 Offset`, `来源 Source`.
+- **Two-line table headers.** Chinese on the first line, English on the second (`摘要` / `Abstract`), so narrow columns never break a label mid-word.
 - **Non-invasive.** No tools registered, no network requests, no prompt changes — it only listens to DSH events.
 - **Never breaks a task.** Every hook is wrapped in `try/catch`; a recording failure logs one warning.
 

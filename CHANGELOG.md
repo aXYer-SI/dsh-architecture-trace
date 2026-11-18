@@ -4,6 +4,14 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-11-18
+
+### Changed
+
+- Bilingual table headers now use two lines instead of one label: Chinese on the first line,
+  English on the second (`摘要` then `Abstract`, joined with `<br>`). Narrow columns no longer
+  break a label mid-word, and the header reads as two tidy rows.
+
 ## [0.4.0] - 2026-11-18
 
 ### Changed
@@ -76,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reading guide (`00-格式说明.md`) written once per output directory.
 - Test suite with synthetic events and a simulated stream.
 
+[0.4.1]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.4.1
 [0.4.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.4.0
 [0.3.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.3.0
 [0.2.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.2.0
