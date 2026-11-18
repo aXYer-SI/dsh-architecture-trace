@@ -58,8 +58,8 @@
         "zh": "DSH 架构追踪"
       },
       "description": {
-        "en": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token. Read how DSH's architecture wires prompts, models and tools into one turn.",
-        "zh": "把每次 DSH 任务的完整运作过程记录成 Markdown：系统提示、请求头、每次模型调用与流式响应、工具调用与结果、耗时与首字时间。用一份可读的文档，看清 DSH 架构如何把提示、模型与工具串成一轮。"
+        "en": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token. Read how DSH's architecture wires prompts, models and tools into one turn; the same file benchmarks TTFT, tok/s and context size across models.",
+        "zh": "把每次 DSH 任务的完整运作过程记录成 Markdown：系统提示、请求头、每次模型调用与流式响应、工具调用与结果、耗时与首字时间。用一份可读的文档，看清 DSH 架构如何把提示、模型与工具串成一轮；同一份文件也能横向比较模型的 TTFT、tok/s 与上下文规模。"
       },
       "icon": "icon.svg",
       "author": "aXyer",
@@ -78,7 +78,10 @@
           "markdown",
           "observability",
           "debugging",
-          "ttft"
+          "ttft",
+          "performance",
+          "benchmark",
+          "latency"
         ],
         "labels": [
           "learning",
@@ -90,12 +93,12 @@
       },
       "versions": [
         {
-          "version": "0.2.0",
-          "publishTimestamp": 1795008751,
+          "version": "0.3.0",
+          "publishTimestamp": 1795009181,
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-architecture-trace",
-            "commit": "4184520f0c677fb48e043a6bd0a512de31344772"
+            "commit": "b8ffed865e5cb8da8de95d74578c5e2a0a6c2eb3"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
