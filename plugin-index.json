@@ -54,8 +54,8 @@
     {
       "name": "dsh-learning-trace",
       "title": {
-        "en": "Learning trace",
-        "zh": "学习追踪"
+        "en": "DSH architecture trace",
+        "zh": "DSH 架构追踪"
       },
       "description": {
         "en": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token. Read how DSH's architecture wires prompts, models and tools into one turn.",
@@ -90,12 +90,12 @@
       },
       "versions": [
         {
-          "version": "0.1.1",
-          "publishTimestamp": 1795004795,
+          "version": "0.1.2",
+          "publishTimestamp": 1795008598,
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-learning-trace",
-            "commit": "7f748fd4a6183e785e0c14af7b503c1f96ddce28"
+            "commit": "a7b1edea2b6a737a03c29a5153b8c893ede7dcff"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
