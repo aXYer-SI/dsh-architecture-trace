@@ -50,13 +50,13 @@
 
 完整的一轮在 [在线示例](examples/session-demo/turn-01.md) 里，直接点开就能读。
 
-## 在 DSH 里长这样
+## 渲染效果
 
 <p align="center">
-  <img src="docs/screenshots/timeline.gif" alt="DSH 里的渲染效果：先显示 🗄 落盘事件（轮次、系统提示、用户消息、工具调用），再切到 ⚡ 内存事件（每次 llm/call、首片段 TTFT、调用结束）" width="100%">
+  <img src="docs/screenshots/timeline.gif" alt="渲染效果：全链路时间线表格，表头为中英对照，先显示 🗄 落盘事件（轮次、系统提示、用户消息、工具调用），再切到 ⚡ 内存事件（每次 llm/call、首片段 TTFT、调用结束）" width="100%">
 </p>
 
-<p align="center"><sub>🗄 落盘（可回放） ↔ ⚡ 内存（仅现场），循环交替</sub></p>
+<p align="center"><sub>示例会话（<code>examples/session-demo</code>）的渲染效果：🗄 落盘 ↔ ⚡ 内存，摘要完整、表头中英对照</sub></p>
 
 ## 它记什么
 

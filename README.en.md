@@ -50,13 +50,13 @@ This turn has 2 model segments and **1 switch**.
 
 A complete turn is in the [live example](examples/session-demo/turn-01.md).
 
-## Inside DSH
+## Rendered example
 
 <p align="center">
-  <img src="docs/screenshots/timeline.gif" alt="Rendered inside DSH: durable 🗄 rows first (turns, system prompt, user messages, tool calls), then the in-memory ⚡ rows (each llm/call, first-chunk TTFT, finish)" width="100%">
+  <img src="docs/screenshots/timeline.gif" alt="Rendered timeline table with bilingual headers: durable 🗄 rows first, then the in-memory ⚡ rows" width="100%">
 </p>
 
-<p align="center"><sub>🗄 durable (replayable) ↔ ⚡ in-memory (live only), alternating</sub></p>
+<p align="center"><sub>From the synthetic example (<code>examples/session-demo</code>): 🗄 durable ↔ ⚡ in-memory, complete summaries, bilingual headers</sub></p>
 
 ## What it records
 
