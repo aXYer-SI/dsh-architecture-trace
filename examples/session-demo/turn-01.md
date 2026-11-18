@@ -1,6 +1,6 @@
 # 第 1 轮 · 帮我看一下 README
 
-> 本文件由 `dsh-learning-trace` 自动生成，记录这一轮任务里 DSH 的完整运作过程。
+> 本文件由 `dsh-architecture-trace` 自动生成，记录这一轮任务里 DSH 的完整运作过程。
 >
 > **两种来源，全文以此区分：**
 > - 🗄 落盘：写入会话日志的权威事件（`session/event`），可回放、可持久化
@@ -28,9 +28,9 @@
 |---|---|
 | 会话 ID | `session-demo` |
 | 工作目录 | D:\work\demo |
-| 开始 | 2026-11-18 20:25:42.844 |
-| 结束 | 2026-11-18 20:25:43.126 |
-| 总耗时 | 282ms |
+| 开始 | 2026-11-18 21:32:16.929 |
+| 结束 | 2026-11-18 21:32:17.225 |
+| 总耗时 | 296ms |
 | 步数（step） | 2 |
 | 模型轨道 | `deepseek/deepseek-v4.1-flash` → `workbuddy/glm-5.3` |
 | 模型切换 | 🔀 1 次 |
@@ -45,10 +45,10 @@
 
 | 段 | 模型 | 起始 | 持续 | 该段调用 | 触发 |
 |--:|---|---|--:|--:|---|
-| 1 | `deepseek/deepseek-v4.1-flash` | +0.018s | 264ms | 1 | `initial` |
-| 2 | 🔀 `workbuddy/glm-5.3` | +0.282s | 0ms | 1 | `change` |
+| 1 | `deepseek/deepseek-v4.1-flash` | +0.018s | 278ms | 1 | `initial` |
+| 2 | 🔀 `workbuddy/glm-5.3` | +0.296s | 0ms | 1 | `change` |
 
-> 🔀 **模型切换**：`deepseek/deepseek-v4.1-flash` → `workbuddy/glm-5.3`（+0.282s）
+> 🔀 **模型切换**：`deepseek/deepseek-v4.1-flash` → `workbuddy/glm-5.3`（+0.296s）
 
 ## 2 · 全链路时间线
 
@@ -62,24 +62,24 @@
 | 4 | +0.018s | 🗄 落盘 | `system/message` | · | 系统提示 24 字符 |
 | 5 | +0.019s | ⚡ 内存 | `llm/call` | deepseek/deepseek-v4.1-flash | 发起模型调用 deepseek/deepseek-v4.1-flash · 1 条消息 · 1 个工具 |
 | 6 | +0.019s | ⚡ 内存 | `llm/first-chunk` | · | 收到首个流片段（TTFT 0ms） |
-| 7 | +0.019s | ⚡ 内存 | `llm/finish` | · | 调用结束：stop · 4 片段 |
-| 8 | +0.019s | 🗄 落盘 | `user/message` | · | 帮我看一下 README |
-| 9 | +0.019s | 🗄 落盘 | `assistant/message` | deepseek/deepseek-v4.1-flash | step 1 · 1 个工具调用 · 我先读取 README。 |
-| 10 | +0.019s | 🗄 落盘 | `tool/call` | · | 调用 `read` · {"file_path":"README.md"} |
-| 11 | +0.281s | 🗄 落盘 | `tool/result` | · | 成功 · # README 这是一个测试文件。 |
-| 12 | +0.281s | 🗄 落盘 | `step/end` | · | 离开 step 1 |
-| 13 | +0.282s | ⚡ 内存 | 🔀 `llm/call` | workbuddy/glm-5.3 | 发起模型调用 workbuddy/glm-5.3 · 1 条消息 · 1 个工具 |
-| 14 | +0.282s | ⚡ 内存 | `llm/first-chunk` | · | 收到首个流片段（TTFT 0ms） |
-| 15 | +0.282s | ⚡ 内存 | `llm/finish` | · | 调用结束：tool-calls · 4 片段 |
-| 16 | +0.282s | 🗄 落盘 | `request/header` | workbuddy/glm-5.3 | 原因 change · glm-5.3 |
-| 17 | +0.282s | 🗄 落盘 | `step/start` | workbuddy/glm-5.3 | 进入 step 2 |
-| 18 | +0.282s | 🗄 落盘 | `assistant/message` | workbuddy/glm-5.3 | step 2 · README 里写的是：这是一个测试文件。 |
-| 19 | +0.282s | 🗄 落盘 | `step/end` | · | 离开 step 2 |
-| 20 | +0.282s | 🗄 落盘 | `turn/end` | · | 结束：completed |
+| 7 | +0.019s | 🗄 落盘 | `user/message` | · | 帮我看一下 README |
+| 8 | +0.020s | ⚡ 内存 | `llm/finish` | · | 调用结束：stop · 4 片段 |
+| 9 | +0.020s | 🗄 落盘 | `assistant/message` | deepseek/deepseek-v4.1-flash | step 1 · 1 个工具调用 · 我先读取 README。 |
+| 10 | +0.020s | 🗄 落盘 | `tool/call` | · | 调用 `read` · {"file_path":"README.md"} |
+| 11 | +0.296s | ⚡ 内存 | 🔀 `llm/call` | workbuddy/glm-5.3 | 发起模型调用 workbuddy/glm-5.3 · 1 条消息 · 1 个工具 |
+| 12 | +0.296s | ⚡ 内存 | `llm/first-chunk` | · | 收到首个流片段（TTFT 0ms） |
+| 13 | +0.296s | ⚡ 内存 | `llm/finish` | · | 调用结束：tool-calls · 4 片段 |
+| 14 | +0.296s | 🗄 落盘 | `tool/result` | · | 成功 · # README 这是一个测试文件。 |
+| 15 | +0.296s | 🗄 落盘 | `step/end` | · | 离开 step 1 |
+| 16 | +0.296s | 🗄 落盘 | `request/header` | workbuddy/glm-5.3 | 原因 change · glm-5.3 |
+| 17 | +0.296s | 🗄 落盘 | `step/start` | workbuddy/glm-5.3 | 进入 step 2 |
+| 18 | +0.296s | 🗄 落盘 | `assistant/message` | workbuddy/glm-5.3 | step 2 · README 里写的是：这是一个测试文件。 |
+| 19 | +0.296s | 🗄 落盘 | `step/end` | · | 离开 step 2 |
+| 20 | +0.296s | 🗄 落盘 | `turn/end` | · | 结束：completed |
 
 ## 3 · 提示词（🗄 落盘 · system/message）
 
-### 3.1 · seq 0 · 2026-11-18 20:25:42.862
+### 3.1 · seq 0 · 2026-11-18 21:32:16.947
 
 长度：**24** 字符
 
@@ -146,7 +146,7 @@ _首个请求头（初始配置）_
 
 ## 5 · 模型输出（🗄 落盘 · assistant/message）
 
-### 5.1 · step 1 · 2026-11-18 20:25:42.863 · `deepseek/deepseek-v4.1-flash`
+### 5.1 · step 1 · 2026-11-18 21:32:16.949 · `deepseek/deepseek-v4.1-flash`
 
 Token：输入 1200 / 输出 60 / 缓存读 900
 
@@ -164,7 +164,7 @@ Token：输入 1200 / 输出 60 / 缓存读 900
 
 **本步请求了 1 个工具调用**：`read`（参数与结果见 §6）
 
-### 5.2 · step 2 · 2026-11-18 20:25:43.126 · `workbuddy/glm-5.3`
+### 5.2 · step 2 · 2026-11-18 21:32:17.225 · `workbuddy/glm-5.3`
 
 > 🔀 此处模型已切换：`deepseek/deepseek-v4.1-flash` → `workbuddy/glm-5.3`
 
@@ -183,9 +183,9 @@ README 里写的是：这是一个测试文件。
 | 项目 | 内容 |
 |---|---|
 | callId | `call-1` |
-| 发起时间 | 2026-11-18 20:25:42.863 |
-| 结果时间 | 2026-11-18 20:25:43.125 |
-| 耗时 | 262ms |
+| 发起时间 | 2026-11-18 21:32:16.949 |
+| 结果时间 | 2026-11-18 21:32:17.225 |
+| 耗时 | 276ms |
 | 状态 | ✅ 成功 |
 
 **调用参数**
@@ -211,10 +211,10 @@ README 里写的是：这是一个测试文件。
 
 | # | 开始 | 模型 | 消息 | 工具 | TTFT | 总耗时 | 输出字符 | Token 出 | 结束 |
 |--:|---|--:|--:|--:|--:|--:|--:|--:|---|
-| 1 | 2026-11-18 20:25:42.863 | `deepseek/deepseek-v4.1-flash` | 1 | 1 | 0ms | 0ms | 4 | 60 | `stop` |
-| 2 | 2026-11-18 20:25:43.126 | `workbuddy/glm-5.3` | 1 | 1 | 0ms | 0ms | 4 | 60 | `tool-calls` |
+| 1 | 2026-11-18 21:32:16.948 | `deepseek/deepseek-v4.1-flash` | 1 | 1 | 0ms | 1ms | 4 | 60 | `stop` |
+| 2 | 2026-11-18 21:32:17.225 | `workbuddy/glm-5.3` | 1 | 1 | 0ms | 0ms | 4 | 60 | `tool-calls` |
 
-### 7.1 · `deepseek/deepseek-v4.1-flash` · 2026-11-18 20:25:42.863（+0.019s）
+### 7.1 · `deepseek/deepseek-v4.1-flash` · 2026-11-18 21:32:16.948（+0.019s）
 
 | 指标 | 值 |
 |---|---|
@@ -222,7 +222,7 @@ README 里写的是：这是一个测试文件。
 | 请求消息 | 1 条 / 12 字符 |
 | 工具 | 1 个 |
 | 首字延迟 (TTFT) | 0ms |
-| 总耗时 | 0ms |
+| 总耗时 | 1ms |
 | 输出字符 | 4（推理 0） |
 | 流片段 | 4（文本 1 / 推理 0 / 工具参数 0） |
 | Token | 输入 1200 / 输出 60 / 缓存读 900 |
@@ -236,14 +236,14 @@ README 里写的是：这是一个测试文件。
 | +0.019s | `block-start` | 0 |
 | +0.019s | `text-delta` | 4 |
 | +0.019s | `usage` | 0 |
-| +0.019s | `finish` | 0 |
+| +0.020s | `finish` | 0 |
 
 </details>
 
 
 > 🔀 **模型切换**：`deepseek/deepseek-v4.1-flash` → `workbuddy/glm-5.3`
 
-### 7.2 · `workbuddy/glm-5.3` · 2026-11-18 20:25:43.126（+0.282s）
+### 7.2 · `workbuddy/glm-5.3` · 2026-11-18 21:32:17.225（+0.296s）
 
 | 指标 | 值 |
 |---|---|
@@ -262,10 +262,10 @@ README 里写的是：这是一个测试文件。
 
 | 偏移 | 类型 | 字符 |
 |--:|---|--:|
-| +0.282s | `block-start` | 0 |
-| +0.282s | `text-delta` | 4 |
-| +0.282s | `usage` | 0 |
-| +0.282s | `finish` | 0 |
+| +0.296s | `block-start` | 0 |
+| +0.296s | `text-delta` | 4 |
+| +0.296s | `usage` | 0 |
+| +0.296s | `finish` | 0 |
 
 </details>
 
@@ -277,4 +277,4 @@ README 里写的是：这是一个测试文件。
 
 ---
 
-_由 dsh-learning-trace 生成 · 会话 `session-demo` · 第 1 轮_
+_由 dsh-architecture-trace 生成 · 会话 `session-demo` · 第 1 轮_

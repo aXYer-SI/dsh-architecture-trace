@@ -1,6 +1,6 @@
 <div align="center">
 
-# dsh-learning-trace
+# dsh-architecture-trace
 
 **See what DSH is actually thinking.**
 
@@ -8,8 +8,8 @@ Flattens a whole turn — system prompt, request headers, every model call and s
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.1.2-blue)
-[![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-learning-trace?style=social)](https://github.com/aXYer-SI/dsh-learning-trace/stargazers)
+![version](https://img.shields.io/badge/version-0.2.0-blue)
+[![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-architecture-trace?style=social)](https://github.com/aXYer-SI/dsh-architecture-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [Live example](examples/session-demo/turn-01.md) · [Install](#install)
 
@@ -84,19 +84,19 @@ This is the part the plugin is pedantic about: every line is labelled with its l
 2. Add this index URL in Discover:
 
    ```
-   https://raw.githubusercontent.com/aXYer-SI/dsh-learning-trace/main/plugin-index.json
+   https://raw.githubusercontent.com/aXYer-SI/dsh-architecture-trace/main/plugin-index.json
    ```
 
 3. Search `learning trace` and install.
 
 ### Option 2 — Local directory
 
-DSH → Settings → Plugins → Add plugin, pick this repository directory (the level containing `package.json`), then enable the `learning-trace` row.
+DSH → Settings → Plugins → Add plugin, pick this repository directory (the level containing `package.json`), then enable the `architecture-trace` row.
 
 ### Option 3 — CLI
 
 ```powershell
-plugin_manager install_bundle target="D:\path\to\dsh-learning-trace"
+plugin_manager install_bundle target="D:\path\to\dsh-architecture-trace"
 ```
 
 Installation links the directory: edit the source and refresh DSH — no reinstall. Requires DSH desktop (profile launch); Node.js ≥ 20 is for development and tests only.
@@ -150,7 +150,7 @@ The authority is the durable `request/header` event (reason `change`); the ⚡ c
 On the plugin row, or in the profile's patch layer:
 
 ```yaml
-- id: learning-trace
+- id: architecture-trace
   config:
     outputDir: "C:/Users/you/dsh-traces"  # empty = <session cwd>/dsh-traces
     captureLlmCalls: true                  # ⚡ record every model call and stream

@@ -1,6 +1,6 @@
 <div align="center">
 
-# dsh-learning-trace
+# dsh-architecture-trace
 
 **看得见 DSH 在想什么。**
 
@@ -8,8 +8,8 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.1.2-blue)
-[![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-learning-trace?style=social)](https://github.com/aXYer-SI/dsh-learning-trace/stargazers)
+![version](https://img.shields.io/badge/version-0.2.0-blue)
+[![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-architecture-trace?style=social)](https://github.com/aXYer-SI/dsh-architecture-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [在线示例](examples/session-demo/turn-01.md) · [一键安装](#安装)
 
@@ -84,19 +84,19 @@
 2. 在 Discover 里添加索引 URL：
 
    ```
-   https://raw.githubusercontent.com/aXYer-SI/dsh-learning-trace/main/plugin-index.json
+   https://raw.githubusercontent.com/aXYer-SI/dsh-architecture-trace/main/plugin-index.json
    ```
 
 3. 搜索 `learning trace`，点安装。
 
 ### 方式二：本地目录
 
-打开 DSH → 设置 → 插件 → 添加插件，选择本仓库目录（含 `package.json` 的那一层），然后在列表里启用 `learning-trace`。
+打开 DSH → 设置 → 插件 → 添加插件，选择本仓库目录（含 `package.json` 的那一层），然后在列表里启用 `architecture-trace`。
 
 ### 方式三：命令行
 
 ```powershell
-plugin_manager install_bundle target="D:\path\to\dsh-learning-trace"
+plugin_manager install_bundle target="D:\path\to\dsh-architecture-trace"
 ```
 
 安装是**链接**方式：之后改动本目录源码，刷新 DSH 即生效，不必重装。要求 DSH 桌面版（profile 启动）；Node.js ≥ 20 只用于开发与测试，运行时由 DSH 提供。
@@ -150,7 +150,7 @@ dsh-traces/
 在插件行配置里填写，或写进 profile 的 patch 层：
 
 ```yaml
-- id: learning-trace
+- id: architecture-trace
   config:
     outputDir: "C:/Users/you/dsh-traces"  # 留空 = 会话工作目录/dsh-traces
     captureLlmCalls: true                  # ⚡ 记录每次模型调用与流式响应
