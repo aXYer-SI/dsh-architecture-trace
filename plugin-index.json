@@ -152,7 +152,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-source-catalog",
-            "commit": "c68685f551b6e47b156c5ac86e03a3c623b0a619"
+            "commit": "7c81347a09ae676bbe833ef18352aeedb05d82e3"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
