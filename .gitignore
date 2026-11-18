@@ -1,0 +1,14 @@
+# Node
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+
+# Plugin output and test artifacts
+dsh-traces/
+test/out/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

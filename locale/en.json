@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Learning trace",
+    "description": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token. Toggle the row in Settings → Plugins; output goes to dsh-traces/ in the session working directory unless outputDir says otherwise. Traces include the system prompt, tool arguments and model output, so remove anything sensitive before sharing.",
+    "detail": "docs/DETAIL.md"
+  }
+}

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" viewBox="0 0 640 300" role="img" aria-label="Trace illustration: two model segments joined by a switch marker, an event timeline, streaming chunks, and stacked record bars">
+  <rect x="32" y="32" width="576" height="236" rx="18" fill="none" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="64" y="60" width="256" height="12" rx="6" fill="#64748b"/>
+  <rect x="336" y="60" width="240" height="12" rx="6" fill="#d97706"/>
+  <line x1="336" y1="48" x2="336" y2="228" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <line x1="64" y1="112" x2="576" y2="112" stroke="#cbd5e1" stroke-width="2"/>
+  <circle cx="88" cy="112" r="4.5" fill="#64748b"/>
+  <circle cx="152" cy="112" r="4.5" fill="#64748b"/>
+  <circle cx="216" cy="112" r="4.5" fill="#64748b"/>
+  <circle cx="280" cy="112" r="4.5" fill="#64748b"/>
+  <circle cx="344" cy="112" r="6.5" fill="#d97706"/>
+  <circle cx="408" cy="112" r="4.5" fill="#64748b"/>
+  <circle cx="472" cy="112" r="4.5" fill="#64748b"/>
+  <circle cx="536" cy="112" r="4.5" fill="#64748b"/>
+  <g stroke="#b45309" stroke-width="2.5" stroke-linecap="round">
+    <line x1="376" y1="126" x2="376" y2="140"/>
+    <line x1="388" y1="122" x2="388" y2="140"/>
+    <line x1="400" y1="118" x2="400" y2="140"/>
+    <line x1="412" y1="124" x2="412" y2="140"/>
+  </g>
+  <circle cx="70" cy="167" r="3.5" fill="#64748b"/>
+  <circle cx="70" cy="195" r="3.5" fill="#64748b"/>
+  <circle cx="70" cy="223" r="3.5" fill="#64748b"/>
+  <rect x="86" y="160" width="370" height="14" rx="7" fill="#94a3b8"/>
+  <rect x="86" y="188" width="280" height="14" rx="7" fill="#94a3b8"/>
+  <rect x="86" y="216" width="320" height="14" rx="7" fill="#94a3b8"/>
+</svg>
