@@ -129,7 +129,7 @@ for (const heading of [
 // layers + model column
 assert.match(turn, /🗄 落盘/)
 assert.match(turn, /⚡ 内存/)
-assert.match(turn, /\| # \| 偏移 \| 来源 \| 事件 \| 模型 \| 摘要 \|/)
+assert.match(turn, /\| # \| 偏移 Offset \| 来源 Source \| 事件 Event \| 模型 Model \| 摘要 Abstract \|/)
 
 // model track: two segments, each with its call counted, one switch
 assert.match(turn, /deepseek\/deepseek-v4\.1-flash/)

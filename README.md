@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.3.0-blue)
+![version](https://img.shields.io/badge/version-0.4.0-blue)
 [![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-architecture-trace?style=social)](https://github.com/aXYer-SI/dsh-architecture-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [在线示例](examples/session-demo/turn-01.md) · [一键安装](#安装)
@@ -33,7 +33,7 @@
 
 本轮共 2 段模型轨道，发生 **1 次 🔀 切换**。
 
-| 段 | 模型 | 起始 | 持续 | 该段调用 | 触发 |
+| 段 Segment | 模型 Model | 起始 Start | 持续 Duration | 该段调用 Calls | 触发 Cause |
 |--:|---|---|--:|--:|---|
 | 1 | `deepseek/deepseek-v4.1-flash` | +0.006s | 268ms | 1 | `initial` |
 | 2 | 🔀 `workbuddy/glm-5.3` | +0.274s | 0ms | 1 | `change` |
@@ -42,7 +42,7 @@
 
 ## 2 · 全链路时间线
 
-| # | 偏移 | 来源 | 事件 | 模型 | 摘要 |
+| # | 偏移 Offset | 来源 Source | 事件 Event | 模型 Model | 摘要 Abstract |
 |--:|--:|---|---|---|---|
 | 3 | +0.006s | 🗄 落盘 | `request/header` | deepseek/deepseek-v4.1-flash | 原因 initial |
 | 4 | +0.006s | 🗄 落盘 | `system/message` | · | 系统提示 24,706 字 |
@@ -76,6 +76,7 @@
 - **性能账本**：每次请求的消息数、字符数、工具数、TTFT、总耗时、token、tok/s。
 - **失败也留档**：重试、请求失败、被取消的尝试都会写进 §5.x / §8，不会静默消失。
 - **摘要完整**：时间线摘要默认不截断，`summaryMaxChars` 想收窄再收窄。
+- **表头中英对照**：`摘要 Abstract`、`偏移 Offset`、`来源 Source`、`事件 Event`、`模型 Model`……所有表格都带英文列名。
 - **零侵入**：不注册任何工具、不发任何网络请求、不改你的提示词；只在 DSH 事件上旁听。
 - **记录失败绝不打断任务**：每个钩子都包了 `try/catch`，出问题只打一行警告。
 

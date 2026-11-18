@@ -8,7 +8,7 @@ Flattens a whole turn — system prompt, request headers, every model call and s
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.3.0-blue)
+![version](https://img.shields.io/badge/version-0.4.0-blue)
 [![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-architecture-trace?style=social)](https://github.com/aXYer-SI/dsh-architecture-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [Live example](examples/session-demo/turn-01.md) · [Install](#install)
@@ -76,6 +76,7 @@ This is the part the plugin is pedantic about: every line is labelled with its l
 - **A performance ledger.** Message counts, characters, tool counts, TTFT, total duration, tokens, tok/s per request.
 - **Failures leave a trace.** Retries, request errors and cancelled attempts appear in §5.x and §8 instead of vanishing.
 - **Complete summaries.** Timeline summaries keep the whole text by default; `summaryMaxChars` narrows them when you want that.
+- **Bilingual table headers.** Every generated table carries both labels, e.g. `摘要 Abstract`, `偏移 Offset`, `来源 Source`.
 - **Non-invasive.** No tools registered, no network requests, no prompt changes — it only listens to DSH events.
 - **Never breaks a task.** Every hook is wrapped in `try/catch`; a recording failure logs one warning.
 
