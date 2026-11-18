@@ -47,6 +47,12 @@
           "en": "Chinese UI",
           "zh": "中文界面"
         }
+      },
+      "knowledge-base": {
+        "title": {
+          "en": "Knowledge base",
+          "zh": "知识库"
+        }
       }
     }
   },
@@ -99,6 +105,54 @@
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-architecture-trace",
             "commit": "8a6192718e466ae197cfa488767260aaefc5f361"
+          },
+          "engines": {
+            "dsh": ">=0.2.2-rc.3"
+          }
+        }
+      ]
+    },
+    {
+      "name": "dsh-source-catalog",
+      "title": {
+        "en": "Tools and sources catalogue",
+        "zh": "工具与数据源清单"
+      },
+      "description": {
+        "en": "Scans past DSH sessions and keeps two bilingual tables of the tools and data sources you actually used: one category per row, pros and cons, and a URL you can open.",
+        "zh": "扫描 DSH 历史会话，把真正用过的工具与数据源整理成两张中英双语的表：每行一个类别、含优缺点，并给出可以直接打开的网址。"
+      },
+      "icon": "https://raw.githubusercontent.com/aXYer-SI/dsh-source-catalog/main/icon.svg",
+      "author": "aXyer",
+      "homepage": "https://github.com/aXYer-SI/dsh-source-catalog#readme",
+      "repository": {
+        "url": "https://github.com/aXYer-SI/dsh-source-catalog"
+      },
+      "metadata": {
+        "category": "developer-tools",
+        "keywords": [
+          "dsh",
+          "catalog",
+          "knowledge-base",
+          "sources",
+          "history",
+          "markdown"
+        ],
+        "labels": [
+          "markdown",
+          "offline",
+          "chinese",
+          "knowledge-base"
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.3.0",
+          "publishTimestamp": 1795011859,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/aXYer-SI/dsh-source-catalog",
+            "commit": "c68685f551b6e47b156c5ac86e03a3c623b0a619"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
