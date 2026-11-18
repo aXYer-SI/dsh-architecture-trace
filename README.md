@@ -52,16 +52,11 @@
 
 ## 在 DSH 里长这样
 
-<table>
-<tr>
-<td><img src="docs/screenshots/timeline-durable.png" alt="全链路时间线：🗄 落盘事件，带来源列与模型列" width="100%"></td>
-<td><img src="docs/screenshots/timeline-stream.png" alt="⚡ 内存事件：每次模型调用、首个流片段 TTFT、调用结束" width="100%"></td>
-</tr>
-<tr>
-<td align="center"><sub>🗄 落盘：轮次、系统提示、用户消息、工具调用——可回放</sub></td>
-<td align="center"><sub>⚡ 内存：每次 llm/call、首片段 TTFT、调用结束——只在现场</sub></td>
-</tr>
-</table>
+<p align="center">
+  <img src="docs/screenshots/timeline.gif" alt="DSH 里的渲染效果：先显示 🗄 落盘事件（轮次、系统提示、用户消息、工具调用），再切到 ⚡ 内存事件（每次 llm/call、首片段 TTFT、调用结束）" width="100%">
+</p>
+
+<p align="center"><sub>🗄 落盘（可回放） ↔ ⚡ 内存（仅现场），循环交替</sub></p>
 
 ## 它记什么
 

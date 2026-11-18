@@ -52,16 +52,11 @@ A complete turn is in the [live example](examples/session-demo/turn-01.md).
 
 ## Inside DSH
 
-<table>
-<tr>
-<td><img src="docs/screenshots/timeline-durable.png" alt="Full timeline: durable events with Source and Model columns" width="100%"></td>
-<td><img src="docs/screenshots/timeline-stream.png" alt="In-memory events: every llm/call, the first chunk TTFT, and the finish" width="100%"></td>
-</tr>
-<tr>
-<td align="center"><sub>🗄 durable: turns, system prompt, user messages, tool calls — replayable</sub></td>
-<td align="center"><sub>⚡ in-memory: each llm/call, first-chunk TTFT, finish — live only</sub></td>
-</tr>
-</table>
+<p align="center">
+  <img src="docs/screenshots/timeline.gif" alt="Rendered inside DSH: durable 🗄 rows first (turns, system prompt, user messages, tool calls), then the in-memory ⚡ rows (each llm/call, first-chunk TTFT, finish)" width="100%">
+</p>
+
+<p align="center"><sub>🗄 durable (replayable) ↔ ⚡ in-memory (live only), alternating</sub></p>
 
 ## What it records
 
