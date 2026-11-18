@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "DSH architecture trace",
-    "description": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token. Toggle the row in Settings → Plugins; output goes to dsh-traces/ in the session working directory unless outputDir says otherwise. Traces include the system prompt, tool arguments and model output, so remove anything sensitive before sharing.",
+    "description": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token — and doubles as a benchmark for TTFT, tok/s, context size and finish reasons. Toggle the row in Settings → Plugins. captureRealtime: false keeps only replayable durable events; summaryMaxChars: 0 keeps timeline summaries complete. Output goes to dsh-traces/ in the session working directory unless outputDir says otherwise. Traces include the system prompt, tool arguments and model output, so remove anything sensitive before sharing.",
     "detail": "docs/DETAIL.md"
   }
 }

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { readFile, rm, readdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { apply } from '../lib/index.js'
+import { eventSummary, oneLine } from '../lib/render.js'
 
 const OUTPUT = join(import.meta.dirname, 'out')
 await rm(OUTPUT, { recursive: true, force: true })
@@ -154,7 +155,42 @@ assert.doesNotMatch(turn, /\[object Object\]/)
 assert.match(turn, /调用结束：stop/)
 assert.match(turn, /调用结束：tool-calls/)
 
-console.log('trace.test: sections, layers and mid-turn model switch verified')
+// summaries keep the whole text unless a limit is configured
+assert.equal(oneLine('x'.repeat(200), 0).length, 200, 'a zero limit keeps everything')
+assert.match(oneLine('x'.repeat(200), 50), /^x{50}…$/)
+const longSummary = eventSummary({ type: 'user/message', data: { content: [{ type: 'text', text: '完整的摘要'.repeat(40) }] } })
+assert.doesNotMatch(longSummary, /…/, 'the default summary is not truncated')
+assert.ok(longSummary.includes('完整的摘要'.repeat(40)))
+
+// captureRealtime: false keeps only the durable layer
+const listeners2 = new Map()
+const ctx2 = {
+  on: (event, listener) => { listeners2.set(event, listener); return () => listeners2.delete(event) },
+  effect: (factory) => factory(),
+}
+const OUTPUT2 = join(import.meta.dirname, 'out-durable')
+apply(ctx2, { outputDir: OUTPUT2, captureRealtime: false })
+assert.equal(listeners2.has('llm/stream'), false, 'no model stream hook when realtime capture is off')
+assert.equal(listeners2.has('agent/status'), false, 'no status hook when realtime capture is off')
+assert.equal(listeners2.has('agent/request-error'), false, 'no request-error hook when realtime capture is off')
+assert.equal(listeners2.has('session/event'), true, 'the durable hook stays')
+
+const session2 = { id: 'session-durable', header: { createdAt: Date.now(), cwd: OUTPUT2 } }
+let seq2 = 1
+const emit2 = (type, data) => listeners2.get('session/event')(session2, { type, seq: seq2++, time: Date.now(), data })
+const longUserText = '长文本摘要测试'.repeat(40)
+emit2('turn/start', { turn: 1 })
+emit2('step/start', { turn: 1, step: 1 })
+emit2('user/message', { role: 'user', content: [{ type: 'text', text: longUserText }] })
+emit2('step/end', { turn: 1, step: 1 })
+emit2('turn/end', { turn: 1, reason: { kind: 'completed' } })
+await sleep(900)
+
+const durableTurn = await readFile(join(OUTPUT2, 'session-durable', 'turn-01.md'), 'utf8')
+assert.doesNotMatch(durableTurn, /⚡ 内存 \|/, 'no in-memory rows in the timeline')
+assert.ok(durableTurn.includes(longUserText), 'the full summary is written')
+
+console.log('trace.test: sections, layers, model switch, full summaries and durable-only mode verified')
 
 const idx = turn.indexOf('## 1 · 模型轨道')
 console.log(turn.slice(idx, idx + 700))

@@ -8,7 +8,7 @@ Flattens a whole turn — system prompt, request headers, every model call and s
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.2.0-blue)
+![version](https://img.shields.io/badge/version-0.3.0-blue)
 [![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-architecture-trace?style=social)](https://github.com/aXYer-SI/dsh-architecture-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [Live example](examples/session-demo/turn-01.md) · [Install](#install)
@@ -67,14 +67,39 @@ A complete turn is in the [live example](examples/session-demo/turn-01.md).
 
 This is the part the plugin is pedantic about: every line is labelled with its layer, the timeline has a Source column, and section headings carry their layer too. You never mistake a live-only sample for a replayable log entry.
 
+**The ⚡ layer can be switched off entirely.** With `captureRealtime: false` the plugin attaches neither `llm/stream`, `agent/status` nor `agent/request-error`, and the file keeps only the replayable 🗄 part. That is the cheapest way to answer "what happened this turn" without the per-request performance detail.
+
 ## Highlights
 
 - **Two layers, never blurred.** Durable log and one-shot in-process activity are recorded and rendered separately.
 - **Model switches stand out.** Segment table, 🔀 banners, a model column in the timeline, and field-level diffs in the request headers.
 - **A performance ledger.** Message counts, characters, tool counts, TTFT, total duration, tokens, tok/s per request.
 - **Failures leave a trace.** Retries, request errors and cancelled attempts appear in §5.x and §8 instead of vanishing.
+- **Complete summaries.** Timeline summaries keep the whole text by default; `summaryMaxChars` narrows them when you want that.
 - **Non-invasive.** No tools registered, no network requests, no prompt changes — it only listens to DSH events.
 - **Never breaks a task.** Every hook is wrapped in `try/catch`; a recording failure logs one warning.
+
+## Benchmarking a model with it
+
+The plugin records **every request actually sent**, not just the final answer, so it doubles as a reproducible, archivable model benchmark.
+
+| Metric | Where | Meaning |
+|---|---|---|
+| Time to first token | §7 per call, §2 timeline | request sent → first stream chunk |
+| Total duration | §7 | request start → stream end |
+| Generation speed | §7 | output tokens ÷ duration (tok/s) |
+| Output size | §7 | output characters, reasoning characters, chunk counts |
+| Context size | §7 / §4 | messages, characters, tool count, full request header |
+| Finish reason | §7 / §8 | `stop` / `tool-calls` / error / cancelled |
+
+How to compare meaningfully:
+
+1. **Same prompt, different model**: switch models mid-turn (🔀) and compare each segment's §7 detail in §1's model track;
+2. **Same model, different settings**: change reasoning effort, maxTokens or the tool set, then compare the §4 header diff with the §7 numbers;
+3. **Look at the tail, not the average**: §7 lists every request, including retries and failures;
+4. **Keep the result**: a few `turn-NN.md` files side by side are an experiment log.
+
+⚠️ TTFT and tok/s depend heavily on the network and server load; a single number means little, repeated runs on one machine mean something. Turn `captureRealtime` off when you want purely durable data.
 
 ## Install
 
@@ -87,7 +112,7 @@ This is the part the plugin is pedantic about: every line is labelled with its l
    https://raw.githubusercontent.com/aXYer-SI/dsh-architecture-trace/main/plugin-index.json
    ```
 
-3. Search `learning trace` and install.
+3. Search `architecture trace` and install.
 
 ### Option 2 — Local directory
 
@@ -153,7 +178,9 @@ On the plugin row, or in the profile's patch layer:
 - id: architecture-trace
   config:
     outputDir: "C:/Users/you/dsh-traces"  # empty = <session cwd>/dsh-traces
+    captureRealtime: true                  # ⚡ master switch for the in-memory layer
     captureLlmCalls: true                  # ⚡ record every model call and stream
+    summaryMaxChars: 0                     # summary budget; 0 keeps the whole text
     includeStream: false                   # include the per-chunk record
     includeRaw: false                      # include raw event JSON
 ```
@@ -161,7 +188,9 @@ On the plugin row, or in the profile's patch layer:
 | Option | Default | Meaning |
 |---|---|---|
 | `outputDir` | empty | absolute path; empty writes into each session's own working directory |
-| `captureLlmCalls` | `true` | turn off to keep only the durable layer, minimal overhead |
+| `captureRealtime` | `true` | **master switch**. Off records no ⚡ events at all, leaving only durable 🗄 rows |
+| `captureLlmCalls` | `true` | within the ⚡ layer, skip model calls and streams |
+| `summaryMaxChars` | `0` | character budget for timeline summaries; `0` keeps the whole text |
 | `includeStream` | `false` | larger files |
 | `includeRaw` | `false` | for debugging the plugin itself |
 
@@ -184,13 +213,14 @@ Before sharing, search for tokens, keys, internal hostnames and personal data. P
 - **Only sessions in this process are recorded.** History is not backfilled; use the `session_*` tools for old sessions.
 - **The ⚡ layer is lossy by nature**: it dies with the process, and the file is a snapshot taken at render time. Chunk samples are capped at 300 per call.
 - **One file per turn**; auxiliary calls outside a turn land in `turn-00.md`.
+- **Complete summaries can grow the file**: a file-reading tool result of a few hundred thousand characters lands in the timeline; use `summaryMaxChars` to trim it.
 - **No rotation, no cleanup**; output grows with use.
 - **Chinese UI copy in 0.1.0**, and no interactive view on purpose — the output must stay greppable and diffable.
 
 ## Development
 
 ```powershell
-node test/trace.test.mjs   # synthetic events + simulated stream
+node test/trace.test.mjs   # synthetic events + simulated stream: layers, switch, full summaries, durable-only mode
 ```
 
 ```

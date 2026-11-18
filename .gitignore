@@ -5,7 +5,7 @@ pnpm-debug.log*
 
 # Plugin output and test artifacts
 dsh-traces/
-test/out/
+test/out*/
 
 # Editor / OS
 .DS_Store

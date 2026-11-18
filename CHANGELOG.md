@@ -4,6 +4,22 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-11-18
+
+### Added
+
+- `captureRealtime` (default `true`): switch the whole ⚡ in-memory layer off. The plugin then attaches
+  no model-stream, status or request-error hook, and the file keeps only replayable durable events.
+- `summaryMaxChars` (default `0`, meaning no limit): timeline summaries now keep the complete text
+  instead of being cut at 80-100 characters. Set a positive budget if you want compact files.
+
+### Changed
+
+- §2 summaries, §8's event table and the empty-state hints follow the new budget and name the
+  realtime switch, so an empty section explains itself.
+- README (both languages), locale copy and the market index now describe the benchmarking use case —
+  TTFT, tok/s, context size and finish reasons — next to the architecture walkthrough.
+
 ## [0.2.0] - 2026-11-18
 
 ### Changed
@@ -52,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reading guide (`00-格式说明.md`) written once per output directory.
 - Test suite with synthetic events and a simulated stream.
 
+[0.3.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.3.0
 [0.2.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.2.0
 [0.1.2]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.1.2
 [0.1.1]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.1.1
