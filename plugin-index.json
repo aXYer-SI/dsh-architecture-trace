@@ -5,25 +5,31 @@
     "zh": "aXyer 的 DSH 插件"
   },
   "description": {
-    "en": "Small, focused plugins for DeepSeek Harness. Everything here comes from learning DSH internals: readable output, no network calls, no prompt changes.",
+    "en": "Small, focused plugins for DeepSeek Harness. Everything here comes from reading DSH internals: readable output, no network calls, no prompt changes.",
     "zh": "小而专注的 DeepSeek Harness 插件。都是作者读 DSH 内部机制时的产物：输出可读、不联网、不改提示词。"
   },
   "metadata": {
     "categories": {
-      "observability": {
+      "developer-tools": {
         "title": {
-          "en": "Observability",
-          "zh": "可观测性"
+          "en": "Developer tools",
+          "zh": "开发工具"
         }
-      },
+      }
+    },
+    "labels": {
       "learning": {
         "title": {
           "en": "Learning",
           "zh": "学习"
         }
-      }
-    },
-    "labels": {
+      },
+      "architecture": {
+        "title": {
+          "en": "Architecture",
+          "zh": "架构"
+        }
+      },
       "markdown": {
         "title": {
           "en": "Markdown output",
@@ -52,8 +58,8 @@
         "zh": "学习追踪"
       },
       "description": {
-        "en": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token.",
-        "zh": "把每次 DSH 任务的完整运作过程记录成 Markdown：系统提示、请求头、每次模型调用与流式响应、工具调用与结果、耗时与首字时间。"
+        "en": "Records every DSH task run as Markdown: system prompt, request headers, each model call with its streamed response, tool calls and results, timings and time to first token. Read how DSH's architecture wires prompts, models and tools into one turn.",
+        "zh": "把每次 DSH 任务的完整运作过程记录成 Markdown：系统提示、请求头、每次模型调用与流式响应、工具调用与结果、耗时与首字时间。用一份可读的文档，看清 DSH 架构如何把提示、模型与工具串成一轮。"
       },
       "icon": "icon.svg",
       "author": "aXyer",
@@ -62,16 +68,21 @@
         "url": "https://github.com/aXYer-SI/dsh-learning-trace"
       },
       "metadata": {
-        "category": "observability",
+        "category": "developer-tools",
         "keywords": [
           "dsh",
           "trace",
+          "architecture",
+          "internals",
           "learning",
           "markdown",
           "observability",
+          "debugging",
           "ttft"
         ],
         "labels": [
+          "learning",
+          "architecture",
           "markdown",
           "offline",
           "chinese"
@@ -84,7 +95,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-learning-trace",
-            "commit": "039f945e186b3b6ffed19231d5888d3dcdd8f40a"
+            "commit": "7f748fd4a6183e785e0c14af7b503c1f96ddce28"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
