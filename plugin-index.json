@@ -147,12 +147,12 @@
       },
       "versions": [
         {
-          "version": "0.3.0",
-          "publishTimestamp": 1795011859,
+          "version": "0.4.0",
+          "publishTimestamp": 1795012538,
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-source-catalog",
-            "commit": "7c81347a09ae676bbe833ef18352aeedb05d82e3"
+            "commit": "02d91a285105bd63f72310968df29ce83c563944"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
