@@ -19,6 +19,14 @@
 
 ---
 
+## ⚠️ 默认关闭，用完请关掉
+
+这个插件**默认是关闭的**，只有在「设置 → 插件」里手动打开才会开始记录。
+
+为什么：提示词会随着任务变长不断变长，`turn-NN.md` 和 `prompts.md` 会跟着膨胀。长任务里一轮就可能写出几百 KB 到几 MB，多个会话累积起来很容易把磁盘写满，也可能让 Markdown 预览卡住。
+
+**建议只在小型、短时的任务上开启**，用完就关。插件也会在**会话结束时自动把自己的开关关掉**，下次要用再手动打开——这样它不会在你忘记的时候一直记录。
+
 ## 你会需要它，如果你——
 
 - **在读 DSH 源码**，想知道「模型真正收到的系统提示长什么样」「工具清单是以什么形式塞进去的」；
@@ -113,7 +121,7 @@
    https://raw.githubusercontent.com/aXYer-SI/dsh-architecture-trace/main/plugin-index.json
    ```
 
-3. 搜索 `architecture trace`，点安装。
+3. 搜索 `architecture trace`，点安装——装好后**行是关闭状态**，需要手动打开才生效。
 
 ### 方式二：本地目录
 
@@ -125,7 +133,7 @@
 plugin_manager install_bundle target="D:\path\to\dsh-architecture-trace"
 ```
 
-安装是**链接**方式：之后改动本目录源码，刷新 DSH 即生效，不必重装。要求 DSH 桌面版（profile 启动）；Node.js ≥ 20 只用于开发与测试，运行时由 DSH 提供。
+安装是**链接**方式：之后改动本目录源码，刷新 DSH 即生效，不必重装。装完记得手动启用，它默认是关的。要求 DSH 桌面版（profile 启动）；Node.js ≥ 20 只用于开发与测试，运行时由 DSH 提供。
 
 ## 用起来是什么感觉
 
@@ -194,6 +202,7 @@ dsh-traces/
     captureRealtime: true                  # ⚡ 总开关：记录 / 不记录非落盘事件
     captureLlmCalls: true                  # ⚡ 开启时，记录每次模型调用与流式响应
     capturePrompts: true                   # 另存 prompts.md：提示词与模型回答
+    autoDisable: true                      # 会话结束后自动关闭本插件
     summaryMaxChars: 0                     # 摘要字数上限；0 = 完整不截断
     includeStream: false                   # 🗄 附带落盘的逐片段记录
     includeRaw: false                      # 附带原始事件 JSON
@@ -205,6 +214,8 @@ dsh-traces/
 | `captureRealtime` | `true` | **总开关**。关掉后完全不记录 ⚡ 层，只剩可回放的 🗄 事件 |
 | `captureLlmCalls` | `true` | 在 ⚡ 层开启的前提下，单独关闭模型调用与流式响应 |
 | `capturePrompts` | `true` | 另存 `prompts.md`；关掉可省下按调用重复保存的提示词 |
+| `autoDisable` | `true` | 会话结束后自动把本插件行设为关闭，避免下次静默记录 |
+| `entryId` | `architecture-trace` | 自动关闭时操作的行 id |
 | `summaryMaxChars` | `0` | §2 时间线摘要的字数上限；`0` = 保留完整文本 |
 | `includeStream` | `false` | 打开后体积会明显变大 |
 | `includeRaw` | `false` | 排查插件自身问题时用 |

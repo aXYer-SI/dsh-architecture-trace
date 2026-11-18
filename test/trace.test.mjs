@@ -8,9 +8,21 @@ const OUTPUT = join(import.meta.dirname, 'out')
 await rm(OUTPUT, { recursive: true, force: true })
 
 const listeners = new Map()
+const disableCalls = []
+const pluginManager = {
+  async listPlugins() {
+    return [{ entryId: 'include:architecture-trace', enabled: true }]
+  },
+  async setPluginEnabled(id, enabled) {
+    disableCalls.push({ id, enabled })
+    return { application: 'applied', changed: true }
+  },
+}
+
 const ctx = {
   on: (event, listener) => { listeners.set(event, listener); return () => listeners.delete(event) },
   effect: (factory) => factory(),
+  get: (name) => (name === 'pluginManager' ? pluginManager : undefined),
 }
 const session = { id: 'session-demo', header: { createdAt: Date.now(), cwd: OUTPUT } }
 
@@ -211,6 +223,13 @@ assert.match(prompts, /这是一个测试文件/, 'the tool result is part of th
 assert.match(prompts, /#### 模型回答/)
 assert.match(prompts, /示例输出/, 'the streamed answer is recorded')
 assert.match(prompts, /🔧 请求工具/, 'tool-call deltas are reconstructed')
+
+// ---- auto-disable: the row is turned off once the session is disposed -----
+listeners.get('session/disposed')?.(session)
+await sleep(400)
+assert.equal(disableCalls.length, 1, 'auto-disable runs once per disposed session')
+assert.equal(disableCalls[0].enabled, false, 'it disables rather than enables')
+assert.ok(String(disableCalls[0].id).endsWith('architecture-trace'), 'it targets this plugin row')
 
 console.log('trace.test: sections, layers, model switch, full summaries and durable-only mode verified')
 

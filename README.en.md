@@ -19,6 +19,14 @@ Flattens a whole turn — system prompt, request headers, every model call and s
 
 ---
 
+## ⚠️ Off by default — turn it off when you are done
+
+The plugin **starts disabled**; nothing is recorded until you enable it in Settings → Plugins.
+
+Prompts grow with the task, so `turn-NN.md` and `prompts.md` grow too: a long turn can write hundreds of KB or several MB, and a few sessions can fill a disk or stall a Markdown preview.
+
+**Use it for small, short tasks**, then turn it off. The plugin also **disables its own row when the session ends**, so it never keeps recording because you forgot about it.
+
 ## You want this if —
 
 - you are **reading DSH source** and want to see the exact system prompt the model received, and the exact shape of the tool list it was given;
@@ -113,7 +121,7 @@ How to compare meaningfully:
    https://raw.githubusercontent.com/aXYer-SI/dsh-architecture-trace/main/plugin-index.json
    ```
 
-3. Search `architecture trace` and install.
+3. Search `architecture trace` and install — the row arrives **disabled**; enable it to start.
 
 ### Option 2 — Local directory
 
@@ -125,7 +133,7 @@ DSH → Settings → Plugins → Add plugin, pick this repository directory (the
 plugin_manager install_bundle target="D:\path\to\dsh-architecture-trace"
 ```
 
-Installation links the directory: edit the source and refresh DSH — no reinstall. Requires DSH desktop (profile launch); Node.js ≥ 20 is for development and tests only.
+Installation links the directory: edit the source and refresh DSH — no reinstall. Enable the row yourself: it ships disabled. Requires DSH desktop (profile launch); Node.js ≥ 20 is for development and tests only.
 
 ## What using it feels like
 
@@ -194,6 +202,7 @@ On the plugin row, or in the profile's patch layer:
     captureRealtime: true                  # ⚡ master switch for the in-memory layer
     captureLlmCalls: true                  # ⚡ record every model call and stream
     capturePrompts: true                   # also write prompts.md
+    autoDisable: true                      # switch this plugin off when the session ends
     summaryMaxChars: 0                     # summary budget; 0 keeps the whole text
     includeStream: false                   # include the per-chunk record
     includeRaw: false                      # include raw event JSON
