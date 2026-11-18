@@ -4,7 +4,7 @@
 
 **See what DSH is actually thinking.**
 
-Flattens a whole turn — system prompt, request headers, every model call and streamed response, tool round-trips, TTFT, wrap-up — into one Markdown file you can read, search and diff.
+Flattens a whole turn — system prompt, request headers, every model call and streamed response, tool round-trips, TTFT, wrap-up — into one Markdown file you can read, search and diff: **a diagram of DSH's architecture that you can actually see**.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)

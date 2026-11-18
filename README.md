@@ -4,7 +4,7 @@
 
 **看得见 DSH 在想什么。**
 
-把一轮任务的完整链路——系统提示、请求头、每一次模型调用与流式响应、工具往返、TTFT、收尾——按时间摊平成一份能读、能搜、能 diff 的 Markdown。
+把一轮任务的完整链路——系统提示、请求头、每一次模型调用与流式响应、工具往返、TTFT、收尾——按时间摊平成一份能读、能搜、能 diff 的 Markdown，是一份**看得见的 DSH 架构图**。
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
