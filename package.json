@@ -1,6 +1,6 @@
 {
   "name": "dsh-learning-trace",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "把每次 DSH 任务的完整运作过程记录成可阅读的 Markdown：系统提示、请求头、每次模型调用与流式响应、工具调用、耗时与 TTFT。",
   "type": "module",
   "main": "lib/index.js",

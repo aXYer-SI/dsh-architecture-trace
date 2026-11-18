@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.1.0-blue)
+![version](https://img.shields.io/badge/version-0.1.1-blue)
 [![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-learning-trace?style=social)](https://github.com/aXYer-SI/dsh-learning-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [在线示例](examples/session-demo/turn-01.md) · [一键安装](#安装)
@@ -49,6 +49,19 @@
 ```
 
 完整的一轮在 [在线示例](examples/session-demo/turn-01.md) 里，直接点开就能读。
+
+## 在 DSH 里长这样
+
+<table>
+<tr>
+<td><img src="docs/screenshots/timeline-durable.png" alt="全链路时间线：🗄 落盘事件，带来源列与模型列" width="100%"></td>
+<td><img src="docs/screenshots/timeline-stream.png" alt="⚡ 内存事件：每次模型调用、首个流片段 TTFT、调用结束" width="100%"></td>
+</tr>
+<tr>
+<td align="center"><sub>🗄 落盘：轮次、系统提示、用户消息、工具调用——可回放</sub></td>
+<td align="center"><sub>⚡ 内存：每次 llm/call、首片段 TTFT、调用结束——只在现场</sub></td>
+</tr>
+</table>
 
 ## 它记什么
 

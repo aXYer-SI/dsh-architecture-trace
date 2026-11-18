@@ -8,7 +8,7 @@ Flattens a whole turn — system prompt, request headers, every model call and s
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![DSH plugin](https://img.shields.io/badge/DSH-plugin-5b6ce0)
-![version](https://img.shields.io/badge/version-0.1.0-blue)
+![version](https://img.shields.io/badge/version-0.1.1-blue)
 [![GitHub stars](https://img.shields.io/github/stars/aXYer-SI/dsh-learning-trace?style=social)](https://github.com/aXYer-SI/dsh-learning-trace/stargazers)
 
 [中文](README.md) · [English](README.en.md) · [Live example](examples/session-demo/turn-01.md) · [Install](#install)
@@ -49,6 +49,19 @@ This turn has 2 model segments and **1 switch**.
 ```
 
 A complete turn is in the [live example](examples/session-demo/turn-01.md).
+
+## Inside DSH
+
+<table>
+<tr>
+<td><img src="docs/screenshots/timeline-durable.png" alt="Full timeline: durable events with Source and Model columns" width="100%"></td>
+<td><img src="docs/screenshots/timeline-stream.png" alt="In-memory events: every llm/call, the first chunk TTFT, and the finish" width="100%"></td>
+</tr>
+<tr>
+<td align="center"><sub>🗄 durable: turns, system prompt, user messages, tool calls — replayable</sub></td>
+<td align="center"><sub>⚡ in-memory: each llm/call, first-chunk TTFT, finish — live only</sub></td>
+</tr>
+</table>
 
 ## What it records
 

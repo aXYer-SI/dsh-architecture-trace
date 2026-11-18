@@ -18,12 +18,12 @@ const now = () => Date.now()
 const emit = (type, data, seq = 0, time = now()) => listeners.get('session/event')?.(session, { type, seq, time, data })
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const runStream = async (request) => {
+const runStream = async (request, finish = 'stop') => {
   const stream = listeners.get('llm/stream')(request, async function* generate() {
     yield { type: 'block-start', index: 0, blockType: 'text' }
     yield { type: 'text-delta', index: 0, text: '示例输出' }
     yield { type: 'usage', usage: { inputTokens: 1200, outputTokens: 60, cacheReadTokens: 900 } }
-    yield { type: 'finish', reason: 'stop' }
+    yield { type: 'finish', reason: finish }
   })
   for await (const _ of stream) { /* drain */ }
 }
@@ -92,7 +92,7 @@ await runStream({
   sessionId: 'session-demo',
   messages: [{ role: 'user', content: [{ type: 'text', text: '继续' }] }],
   tools: [{ name: 'read', description: '读取工作区文件', parameters: {} }],
-})
+}, { kind: 'tool-calls' })
 
 emit('assistant/message', {
   turn: 1,
@@ -148,6 +148,11 @@ assert.match(turn, /call-1/)
 assert.match(turn, /耗时 \| 2\d\dms/)
 assert.match(turn, /completed/)
 assert.match(turn, /✅ 成功/)
+
+// finish reasons arrive as strings and as event objects; neither may print as [object Object]
+assert.doesNotMatch(turn, /\[object Object\]/)
+assert.match(turn, /调用结束：stop/)
+assert.match(turn, /调用结束：tool-calls/)
 
 console.log('trace.test: sections, layers and mid-turn model switch verified')
 
