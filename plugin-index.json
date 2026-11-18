@@ -104,7 +104,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-architecture-trace",
-            "commit": "21495cbaa4901c4cf8d0df170327c885091d1615"
+            "commit": "9ab9c064d5c226b8435aebc91e03b84416dd96b6"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
