@@ -99,12 +99,12 @@
       },
       "versions": [
         {
-          "version": "0.5.0",
-          "publishTimestamp": 1795013466,
+          "version": "0.6.0",
+          "publishTimestamp": 1795013806,
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-architecture-trace",
-            "commit": "9ab9c064d5c226b8435aebc91e03b84416dd96b6"
+            "commit": "e7a90482734282ff13f02700af0d095e08c2d14e"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
