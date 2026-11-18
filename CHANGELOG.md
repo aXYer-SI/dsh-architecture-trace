@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - a compacted or reordered context falls back to the full prompt and says so;
   - each call is followed by the answer: reasoning, text and reconstructed tool calls.
 - `capturePrompts` option (default `true`) to skip the journal; the session index links to it.
+- The journal is written when a turn ends and when the session is disposed, so a long session
+  does not rewrite a multi-megabyte file on every debounced flush.
 
 ## [0.4.1] - 2026-11-18
 
