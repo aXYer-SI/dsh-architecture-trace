@@ -84,7 +84,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/aXYer-SI/dsh-learning-trace",
-            "commit": "756ab9800c2239330f6f0621a1b210e4f4a77ae7"
+            "commit": "039f945e186b3b6ffed19231d5888d3dcdd8f40a"
           },
           "engines": {
             "dsh": ">=0.2.2-rc.3"
