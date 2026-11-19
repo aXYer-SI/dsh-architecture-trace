@@ -283,6 +283,12 @@ lib/guide.js   00-格式说明.md 的正文
 
 如果它帮你省下了翻源码的时间，点个 ⭐ 就够了；有想加的事件或渲染章节，欢迎开 issue。
 
+## 遇到问题 / Need help
+
+- **Bug 与功能建议**：[Issues](https://github.com/aXYer-SI/dsh-architecture-trace/issues) —— 附上 DSH 版本、插件版本和 `auto-disable.log` 的相关行最省时间；
+- **用法提问、想法交流**：[Discussions](https://github.com/aXYer-SI/dsh-architecture-trace/discussions)；
+- 已知坑位（会话销毁事件、HMR 事务不能嵌套）记录在 [issue #1](https://github.com/aXYer-SI/dsh-architecture-trace/issues/1)，欢迎补充你遇到的平台差异。
+
 ## 许可
 
 [MIT](LICENSE) © 2026 aXyer

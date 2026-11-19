@@ -275,6 +275,12 @@ lib/guide.js   body of 00-格式说明.md
 
 A ⭐ is enough if it saves you some source reading; issues and pull requests welcome.
 
+## Need help
+
+- **Bugs and feature requests**: [Issues](https://github.com/aXYer-SI/dsh-architecture-trace/issues) — include the DSH version, the plugin version and the relevant `auto-disable.log` lines;
+- **Questions and ideas**: [Discussions](https://github.com/aXYer-SI/dsh-architecture-trace/discussions);
+- Known pitfalls (session teardown events, nested HMR transactions) are written up in [issue #1](https://github.com/aXYer-SI/dsh-architecture-trace/issues/1); platform differences are welcome there.
+
 ## License
 
 [MIT](LICENSE) © 2026 aXyer

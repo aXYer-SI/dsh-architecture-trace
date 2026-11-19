@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and idea sharing
+    url: https://github.com/aXYer-SI/dsh-architecture-trace/discussions
+    about: Ask how something works, share a trace pattern, or suggest a direction.

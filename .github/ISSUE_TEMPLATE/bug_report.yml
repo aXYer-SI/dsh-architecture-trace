@@ -1,0 +1,55 @@
+name: Bug report
+description: Something in dsh-architecture-trace does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. The plugin writes a diagnostic log to
+        `<session cwd>/dsh-traces/session-*/auto-disable.log` and one
+        `turn-NN.md` per turn — attaching the relevant lines helps a lot.
+  - type: input
+    id: dsh-version
+    attributes:
+      label: DSH version
+      description: Settings → About, or the release tag you installed
+      placeholder: 0.2.2-rc.3
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: Shown on the plugin row
+      placeholder: 0.7.0
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How it was installed
+      options:
+        - Plugin market index
+        - Local directory (link)
+        - git URL
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+      description: Include the relevant `auto-disable.log` or turn-file lines.
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Relevant config
+      description: The plugin row's `config` block, if you changed it.
+      render: yaml
