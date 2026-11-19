@@ -30,6 +30,8 @@ Prompts grow with the task, so `turn-NN.md` and `prompts.md` grow too: a long tu
 > Why not "window closed"? DSH emits `session/disposed` only when a session is destroyed (deleted, or the app quits); a chat window that merely stays open never fires it. The only reliable "this task is finished" signal is the end of a turn, so idle time is the fallback.
 >
 > Two pitfalls are handled in 0.7.0: calling `pluginManager.setPluginEnabled` from inside the plugin fails with `HMR transactions cannot be nested`, so the switch is written straight into the profile's `cordis.patch.yml`; the deadline is persisted, so a plugin reload or restart still restores the countdown. Every step lands in the session's `auto-disable.log` (`armed` / `restored` / `fired` / `disabled`).
+>
+> One display-level difference: the Plugins page lists **bundles**, not rows. Turning only the row off leaves the bundle selected, which still reads as installed. Auto-disable therefore also drops `dsh-architecture-trace` from the profile's `dsh.profile.bundles`, so the page shows it off; select the bundle again (or reinstall from the market) to use it next time — the row config is kept.
 
 ## You want this if —
 

@@ -21,8 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   persists its deadline (restored after a reload or restart) and writes `disabled: true` straight
   into the profile's `cordis.patch.yml`, because calling `pluginManager.setPluginEnabled` from
   inside the plugin fails with `HMR transactions cannot be nested`.
-- The disable attempt retries with a short pause and logs its result to `auto-disable.log`
-  (`armed` / `restored` / `fired` / `disabled`), so a silent no-op is visible.
+- The Plugins page lists bundles, not rows, so an off row still looked installed. Auto-disable now also
+  drops the bundle from the profile's `dsh.profile.bundles`; the dependency and the row config stay, so
+  re-enabling is one click.
+- The disable attempt logs every step to `auto-disable.log` (`armed` / `restored` / `fired` / `disabled`
+  / `bundle deselected`), so a silent no-op is visible.
 
 ## [0.6.1] - 2026-11-18
 

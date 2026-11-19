@@ -14,6 +14,8 @@ await rm(PROFILE_DIR, { recursive: true, force: true })
 await mkdir(PROFILE_DIR, { recursive: true })
 await writeFile(join(PROFILE_DIR, 'cordis.patch.yml'),
   '- id: architecture-trace\n  name: "dsh-architecture-trace"\n  config:\n    autoDisable: "idle"\n  disabled: false\n', 'utf8')
+await writeFile(join(PROFILE_DIR, 'package.json'),
+  JSON.stringify({ name: 'profile', dsh: { profile: { bundles: ['dsh-architecture-trace', 'other'] } } }, null, 2), 'utf8')
 process.env.DSH_PROFILE_DIR = PROFILE_DIR
 const commandRegistrations = []
 const commands = {
@@ -253,6 +255,8 @@ await sleep(300)
 const patched = await readFile(join(PROFILE_DIR, 'cordis.patch.yml'), 'utf8')
 assert.match(patched, /disabled: true/, 'turn/end disables the row in the profile patch')
 assert.doesNotMatch(patched, /disabled: false/, 'the old value is replaced')
+const manifest = JSON.parse(await readFile(join(PROFILE_DIR, 'package.json'), 'utf8'))
+assert.deepEqual(manifest.dsh.profile.bundles, ['other'], 'the bundle is deselected so the Plugins page shows it off')
 
 // ---- idle mode waits, and a new turn cancels the countdown ----------------
 const listeners3 = new Map()

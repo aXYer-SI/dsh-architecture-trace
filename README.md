@@ -29,7 +29,9 @@
 
 > 为什么不用「关闭窗口」判断：DSH 的 `session/disposed` 只在会话销毁（删除会话、退出应用）时触发，聊天窗口一直开着时不会触发。可靠的「这件事做完了」信号只有**一轮结束**，所以用空闲时间兜底。
 >
-> 实现上还有两个坑，已在 0.7.0 处理：插件内部调用 `pluginManager.setPluginEnabled` 会报 `HMR transactions cannot be nested`，所以关闭动作是**直接改写 profile 的 `cordis.patch.yml`**；截止时间会落盘，插件重载/重启后仍能恢复计时。过程全部记录在会话目录的 `auto-disable.log`（`armed` / `restored` / `fired` / `disabled`）。
+> 实现上还有两个坑，已在 0.7.0 处理：插件内部调用 `pluginManager.setPluginEnabled` 会报 `HMR transactions cannot be nested`，所以关闭动作是**直接改写 profile 的 `cordis.patch.yml`**；截止时间会落盘，插件重载/重启后仍能恢复计时。过程全部记录在会话目录的 `auto-disable.log`（`armed` / `restored` / `fired` / `disabled` / `bundle deselected`）。
+>
+> 还有一个显示层差异：**插件页列的是 bundle，不是行**。只关行的话，bundle 仍是选中的，页面看起来像「还开着」。所以自动关闭会同时把 `dsh-architecture-trace` 从 profile 的 `dsh.profile.bundles` 里移除——页面上就是「关」了。下次要用，在插件页把 bundle 选回来（或从市场重新安装）即可，行配置仍然保留。
 
 ## 你会需要它，如果你——
 
