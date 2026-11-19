@@ -28,6 +28,8 @@
 **建议只在小型、短时的任务上开启**，用完就关。插件会在**一轮结束、空闲 5 分钟后**自动把自己的开关关掉，会话被真正销毁时也会关——这样它不会在你忘记的时候一直记录。
 
 > 为什么不用「关闭窗口」判断：DSH 的 `session/disposed` 只在会话销毁（删除会话、退出应用）时触发，聊天窗口一直开着时不会触发。可靠的「这件事做完了」信号只有**一轮结束**，所以用空闲时间兜底。
+>
+> 实现上还有两个坑，已在 0.7.0 处理：插件内部调用 `pluginManager.setPluginEnabled` 会报 `HMR transactions cannot be nested`，所以关闭动作是**直接改写 profile 的 `cordis.patch.yml`**；截止时间会落盘，插件重载/重启后仍能恢复计时。过程全部记录在会话目录的 `auto-disable.log`（`armed` / `restored` / `fired` / `disabled`）。
 
 ## 你会需要它，如果你——
 
@@ -192,6 +194,18 @@ dsh-traces/
 - 每次调用后紧跟模型回答：推理、正文、工具调用（由流式片段重建）。
 
 和 `turn-NN.md` 互补：那边是落盘事实（§3 系统提示、§7 每次请求），这边是对话原貌。不想生成时设 `capturePrompts: false`。
+
+## 运行时切换：`/trace-realtime`
+
+不用改配置也能切换记录层级：
+
+```
+/trace-realtime          # 查看当前状态
+/trace-realtime off      # 只记 🗄 落盘事件（不再监听模型流，也不生成 prompts.md）
+/trace-realtime on       # 落盘 + 非落盘（⚡ 模型流、状态、请求失败）与 prompts.md
+```
+
+切换只对**本次运行**有效，重启插件后回到配置值（`captureRealtime` / `capturePrompts`）。`off` 之后新产生的轮次文件里不会再有 ⚡ 行，`§7` 会写明「本轮没有捕获到模型调用」。
 
 ## 配置
 

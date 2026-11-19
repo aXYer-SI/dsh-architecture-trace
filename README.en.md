@@ -28,6 +28,8 @@ Prompts grow with the task, so `turn-NN.md` and `prompts.md` grow too: a long tu
 **Use it for small, short tasks**, then turn it off. The plugin also **disables its own row five minutes after a turn ends while idle**, and when the session is actually torn down — so it never keeps recording because you forgot about it.
 
 > Why not "window closed"? DSH emits `session/disposed` only when a session is destroyed (deleted, or the app quits); a chat window that merely stays open never fires it. The only reliable "this task is finished" signal is the end of a turn, so idle time is the fallback.
+>
+> Two pitfalls are handled in 0.7.0: calling `pluginManager.setPluginEnabled` from inside the plugin fails with `HMR transactions cannot be nested`, so the switch is written straight into the profile's `cordis.patch.yml`; the deadline is persisted, so a plugin reload or restart still restores the countdown. Every step lands in the session's `auto-disable.log` (`armed` / `restored` / `fired` / `disabled`).
 
 ## You want this if —
 
@@ -192,6 +194,18 @@ Each session also writes `prompts.md`: **the messages the harness actually sent*
 - each call is followed by the answer: reasoning, text and tool calls, rebuilt from the stream.
 
 It complements `turn-NN.md`: that file is the durable record (§3 system prompt, §7 every request), this one is the conversation as it happened. Set `capturePrompts: false` to skip it.
+
+## Switching at runtime: `/trace-realtime`
+
+No config edit needed to change what gets recorded:
+
+```
+/trace-realtime          # show the current state
+/trace-realtime off      # durable 🗄 events only (the model stream is no longer recorded, no prompts.md)
+/trace-realtime on       # durable + in-memory ⚡ (streams, status, request errors) and prompts.md
+```
+
+The switch lasts for this run only; reloading the plugin falls back to the configured `captureRealtime` / `capturePrompts`. After `off`, new turn files carry no ⚡ rows and §7 explains that no model call was captured.
 
 ## Configuration
 

@@ -4,6 +4,26 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-11-18
+
+### Added
+
+- **`/trace-realtime`**: switch the in-memory ⚡ layer at runtime — `off` keeps only the durable
+  events and stops writing `prompts.md`, `on` restores both, no argument reports the state. The
+  switch lasts for the run; the row config remains the persisted default.
+- The model-stream, status and request-error hooks are now always registered and gated by that
+  switch, so a turn can move between the two layers without reloading the plugin.
+
+### Fixed
+
+- `autoDisable` never fired in practice. `session/disposed` only arrives when a session is torn
+  down, and the countdown was lost on every plugin reload. It now keys off the end of a turn,
+  persists its deadline (restored after a reload or restart) and writes `disabled: true` straight
+  into the profile's `cordis.patch.yml`, because calling `pluginManager.setPluginEnabled` from
+  inside the plugin fails with `HMR transactions cannot be nested`.
+- The disable attempt retries with a short pause and logs its result to `auto-disable.log`
+  (`armed` / `restored` / `fired` / `disabled`), so a silent no-op is visible.
+
 ## [0.6.1] - 2026-11-18
 
 ### Fixed
@@ -124,6 +144,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reading guide (`00-格式说明.md`) written once per output directory.
 - Test suite with synthetic events and a simulated stream.
 
+[0.7.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.7.0
 [0.6.1]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.6.1
 [0.6.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.6.0
 [0.5.0]: https://github.com/aXYer-SI/dsh-architecture-trace/releases/tag/v0.5.0

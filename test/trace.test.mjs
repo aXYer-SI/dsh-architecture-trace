@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFile, rm, readdir } from 'node:fs/promises'
+import { mkdir, readFile, rm, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { apply } from '../lib/index.js'
 import { eventSummary, oneLine } from '../lib/render.js'
@@ -9,24 +9,24 @@ await rm(OUTPUT, { recursive: true, force: true })
 
 const listeners = new Map()
 const disableCalls = []
-const pluginManager = {
-  async listPlugins() {
-    return [{ entryId: 'include:architecture-trace', enabled: true }]
-  },
-  async setPluginEnabled(id, enabled) {
-    disableCalls.push({ id, enabled })
-    return { application: 'applied', changed: true }
-  },
+const PROFILE_DIR = join(import.meta.dirname, 'out-profile')
+await rm(PROFILE_DIR, { recursive: true, force: true })
+await mkdir(PROFILE_DIR, { recursive: true })
+await writeFile(join(PROFILE_DIR, 'cordis.patch.yml'),
+  '- id: architecture-trace\n  name: "dsh-architecture-trace"\n  config:\n    autoDisable: "idle"\n  disabled: false\n', 'utf8')
+process.env.DSH_PROFILE_DIR = PROFILE_DIR
+const commandRegistrations = []
+const commands = {
+  register(definition) { commandRegistrations.push(definition); return () => {} },
 }
-
 const ctx = {
   on: (event, listener) => { listeners.set(event, listener); return () => listeners.delete(event) },
   effect: (factory) => factory(),
-  get: (name) => (name === 'pluginManager' ? pluginManager : undefined),
+  get: (name) => (name === 'commands' ? commands : undefined),
 }
 const session = { id: 'session-demo', header: { createdAt: Date.now(), cwd: OUTPUT } }
 
-apply(ctx, { outputDir: OUTPUT, autoDisable: 'turn' })
+apply(ctx, { outputDir: OUTPUT, autoDisable: 'turn', autoDisableStateFile: join(OUTPUT, 'auto-disable.json') })
 const now = () => Date.now()
 const emit = (type, data, seq = 0, time = now()) => listeners.get('session/event')?.(session, { type, seq, time, data })
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -189,12 +189,15 @@ const listeners2 = new Map()
 const ctx2 = {
   on: (event, listener) => { listeners2.set(event, listener); return () => listeners2.delete(event) },
   effect: (factory) => factory(),
+  get: () => undefined,
 }
 const OUTPUT2 = join(import.meta.dirname, 'out-durable')
-apply(ctx2, { outputDir: OUTPUT2, captureRealtime: false })
-assert.equal(listeners2.has('llm/stream'), false, 'no model stream hook when realtime capture is off')
-assert.equal(listeners2.has('agent/status'), false, 'no status hook when realtime capture is off')
-assert.equal(listeners2.has('agent/request-error'), false, 'no request-error hook when realtime capture is off')
+apply(ctx2, { outputDir: OUTPUT2, captureRealtime: false, autoDisable: false })
+// The hooks stay registered (the runtime switch can turn them back on) but
+// record nothing while the switch is off.
+assert.equal(listeners2.has('llm/stream'), true, 'the stream hook stays registered')
+assert.equal(listeners2.has('agent/status'), true, 'the status hook stays registered')
+assert.equal(listeners2.has('agent/request-error'), true, 'the request-error hook stays registered')
 assert.equal(listeners2.has('session/event'), true, 'the durable hook stays')
 
 const session2 = { id: 'session-durable', header: { createdAt: Date.now(), cwd: OUTPUT2 } }
@@ -224,25 +227,41 @@ assert.match(prompts, /#### 模型回答/)
 assert.match(prompts, /示例输出/, 'the streamed answer is recorded')
 assert.match(prompts, /🔧 请求工具/, 'tool-call deltas are reconstructed')
 
-// ---- auto-disable: a finished turn switches the plugin off ----------------
-assert.ok(disableCalls.length >= 1, 'turn/end disables the plugin')
-assert.equal(disableCalls.at(-1).enabled, false, 'it disables rather than enables')
-assert.ok(String(disableCalls.at(-1).id).endsWith('architecture-trace'), 'it targets this plugin row')
+// ---- /trace-realtime: switch the in-memory layer at runtime ---------------
+const realtimeCommand = commandRegistrations.find((command) => command.name === 'trace-realtime')
+assert.ok(realtimeCommand, 'the realtime switch command is registered')
+assert.match((await realtimeCommand.handler({ rawInput: '' })).text, /落盘/, 'no argument reports the state')
+assert.match((await realtimeCommand.handler({ rawInput: 'off' })).text, /只保留/, 'off switches to durable only')
+
+const cmdSession = { id: 'session-cmd', header: { createdAt: Date.now(), cwd: OUTPUT } }
+let seqCmd = 0
+const emitCmd = (type, data) => listeners.get('session/event')(cmdSession, { type, seq: ++seqCmd, time: Date.now(), data })
+emitCmd('turn/start', { turn: 1 })
+const cmdStream = listeners.get('llm/stream')(
+  { provider: 'x', model: 'y', sessionId: 'session-cmd', messages: [] },
+  async function* generate() { yield { type: 'text-delta', text: '不该被记录' } },
+)
+for await (const _chunk of cmdStream) { /* drain */ }
+emitCmd('turn/end', { turn: 1, reason: { kind: 'completed' } })
+await sleep(600)
+const cmdTurn = await readFile(join(OUTPUT, 'session-cmd', 'turn-01.md'), 'utf8')
+assert.doesNotMatch(cmdTurn, /⚡ 内存 \|/, 'no in-memory rows after the switch is off')
+assert.match(cmdTurn, /本轮没有捕获到模型调用/, 'the empty section explains itself')
+
+// ---- auto-disable: a finished turn writes disabled: true into the profile --
+await sleep(300)
+const patched = await readFile(join(PROFILE_DIR, 'cordis.patch.yml'), 'utf8')
+assert.match(patched, /disabled: true/, 'turn/end disables the row in the profile patch')
+assert.doesNotMatch(patched, /disabled: false/, 'the old value is replaced')
 
 // ---- idle mode waits, and a new turn cancels the countdown ----------------
-const idleCalls = []
 const listeners3 = new Map()
 const ctx3 = {
   on: (event, listener) => { listeners3.set(event, listener); return () => listeners3.delete(event) },
   effect: (factory) => factory(),
-  get: (name) => (name === 'pluginManager'
-    ? {
-      async listPlugins() { return [{ entryId: 'include:architecture-trace' }] },
-      async setPluginEnabled(id, enabled) { idleCalls.push({ id, enabled }); return { application: 'applied' } },
-    }
-    : undefined),
+  get: () => undefined,
 }
-apply(ctx3, { outputDir: join(import.meta.dirname, 'out-idle'), autoDisable: 'idle', idleMinutes: 0.002 })
+apply(ctx3, { outputDir: join(import.meta.dirname, 'out-idle'), autoDisable: 'idle', idleMinutes: 0.002, autoDisableStateFile: join(import.meta.dirname, 'out-idle', 'auto-disable.json') })
 const session3 = { id: 'session-idle', header: { createdAt: Date.now(), cwd: OUTPUT } }
 let seq3 = 0
 const emit3 = (type, data) => listeners3.get('session/event')(session3, { type, seq: ++seq3, time: Date.now(), data })
@@ -250,14 +269,17 @@ emit3('turn/start', { turn: 1 })
 emit3('turn/end', { turn: 1, reason: { kind: 'completed' } })
 await sleep(40)
 emit3('turn/start', { turn: 2 })
+await writeFile(join(PROFILE_DIR, 'cordis.patch.yml'),
+  '- id: architecture-trace\n  name: "dsh-architecture-trace"\n  disabled: false\n', 'utf8')
 await sleep(320)
-assert.equal(idleCalls.length, 0, 'a new turn cancels the idle countdown')
+assert.match(await readFile(join(PROFILE_DIR, 'cordis.patch.yml'), 'utf8'), /disabled: false/,
+  'a new turn cancels the idle countdown')
 emit3('turn/end', { turn: 2, reason: { kind: 'completed' } })
-await sleep(320)
-assert.equal(idleCalls.length, 1, 'an idle turn countdown fires')
-assert.equal(idleCalls[0].enabled, false)
+await sleep(500)
+assert.match(await readFile(join(PROFILE_DIR, 'cordis.patch.yml'), 'utf8'), /disabled: true/,
+  'an idle turn countdown fires and disables the row')
 
-console.log('trace.test: sections, layers, model switch, full summaries and durable-only mode verified')
+console.log('trace.test: sections, layers, model switch, full summaries, durable-only mode and the realtime switch verified')
 
 const idx = turn.indexOf('## 1 · 模型轨道')
 console.log(turn.slice(idx, idx + 700))
